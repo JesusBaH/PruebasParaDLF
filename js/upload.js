@@ -1,24 +1,22 @@
 import { auth, db, storage } from './config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { processToJpg } from './converter.js';
 
-// --- ELEMENTOS DE INTERFAZ LIQUID GLASS ---
+// --- GESTIÓN DE PANELES LIQUID GLASS ---
 const menuButtons = document.querySelectorAll('.menu-btn');
 const crudSections = document.querySelectorAll('.crud-section');
 const navIndicator = document.querySelector('.nav-indicator');
 const panelsOrder = ['panel-catalog', 'panel-categories', 'panel-occasions'];
 
-// Función para mover la burbuja magnética neón
 function moveIndicator(activeBtn) {
   if (!navIndicator || window.innerWidth > 860) return;
-  
   const btnWidth = activeBtn.offsetWidth;
   const btnLeft = activeBtn.offsetLeft;
   
   navIndicator.style.width = `${btnWidth}px`;
-  navIndicator.style.transform = `translateX(${btnLeft - 4}px)`; // Ajuste por el padding del riel
+  navIndicator.style.transform = `translateX(${btnLeft - 4}px)`; // Sincronización milimétrica con el padding del riel
 }
 
 function switchPanel(panelId) {
@@ -44,12 +42,11 @@ function switchPanel(panelId) {
   }
 }
 
-// Iniciar posición de la burbuja al cargar la página
 if (menuButtons.length > 0) {
   setTimeout(() => {
     const activeBtn = document.querySelector('.menu-btn.active');
     if (activeBtn) moveIndicator(activeBtn);
-  }, 300);
+  }, 350);
 }
 
 if (menuButtons) {
@@ -60,45 +57,47 @@ if (menuButtons) {
   });
 }
 
-// Escuchar cambios de tamaño de pantalla para recalcular la burbuja
 window.addEventListener('resize', () => {
   const activeBtn = document.querySelector('.menu-btn.active');
   if (activeBtn) moveIndicator(activeBtn);
 });
 
-// --- CANVAS SWIPE (DESLIZAMIENTO TÁCTIL) ---
+// --- CAPTURA DE GESTOS TÁCTILES ULTRA-SENSITIVOS (SWIPE CANVAS) ---
 const contentPanel = document.querySelector('.content-panel');
 let touchStartX = 0;
-let touchEndX = 0;
+let touchStartY = 0;
 
 if (contentPanel) {
   contentPanel.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
   }, { passive: true });
 
   contentPanel.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipeGesture();
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const deltaX = touchStartX - touchEndX;
+    const deltaY = touchStartY - touchEndY;
+
+    // Condición: Solo cambia si el arrastre es predominantemente horizontal y no vertical
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
+      const activeSection = Array.from(crudSections).find(s => s.classList.contains('active'));
+      if (!activeSection) return;
+
+      const currentIndex = panelsOrder.indexOf(activeSection.id);
+
+      if (deltaX > 0 && currentIndex < panelsOrder.length - 1) {
+        // Swipe Izquierda -> Siguiente panel
+        switchPanel(panelsOrder[currentIndex + 1]);
+        contentPanel.scrollTop = 0;
+      } else if (deltaX < 0 && currentIndex > 0) {
+        // Swipe Derecha -> Panel anterior
+        switchPanel(panelsOrder[currentIndex - 1]);
+        contentPanel.scrollTop = 0;
+      }
+    }
   }, { passive: true });
-}
-
-function handleSwipeGesture() {
-  if (window.innerWidth > 860) return;
-
-  const activeSection = Array.from(crudSections).find(s => s.classList.contains('active'));
-  if (!activeSection) return;
-
-  const currentIndex = panelsOrder.indexOf(activeSection.id);
-  const swipeDistance = touchStartX - touchEndX;
-  const swipeThreshold = 70; // Sensibilidad de arrastre táctil
-
-  if (swipeDistance > swipeThreshold && currentIndex < panelsOrder.length - 1) {
-    switchPanel(panelsOrder[currentIndex + 1]);
-    contentPanel.scrollTop = 0;
-  } else if (swipeDistance < -swipeThreshold && currentIndex > 0) {
-    switchPanel(panelsOrder[currentIndex - 1]);
-    contentPanel.scrollTop = 0;
-  }
 }
 
 // Elementos compartidos del Catálogo existentes

@@ -93,7 +93,6 @@
   position: relative;
 }
 
-/* Oculta la burbuja líquida móvil cuando estás en la computadora */
 .nav-indicator {
   display: none;
 }
@@ -166,6 +165,7 @@
   box-shadow: 0 5px 15px rgba(255, 59, 48, 0.3);
 }
 
+/* LIENZO DE CONTROL CON TOUCH-ACTION DINÁMICO */
 .content-panel {
   flex: 1;
   height: 100%;
@@ -676,16 +676,7 @@ th {
   color: #ff3b30;
 }
 
-#status {
-  font-size: 0.8rem;
-  color: var(--sand-light);
-  margin-top: 4px;
-  min-height: 16px;
-  text-align: center;
-  font-weight: 600;
-}
-
-/* INTERFAZ EN MÓVIL: LIQUID GLASS ACTUALIZADO CON BURBUJA MAGNÉTICA */
+/* CLAVE PARA EL DESLIZAMIENTO TÁCTIL (PROHÍBE NAVEGACIONES HORIZONTALES DEL NAVEGADOR) */
 @media (max-width: 860px) {
   .dashboard-wrapper {
     flex-direction: column;
@@ -730,7 +721,16 @@ th {
     margin-bottom: 0;
   }
 
-  /* PASTILLA INTEGRADA DE CRISTAL LÍQUIDO */
+  .sidebar-info span {
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  .sidebar-info p {
+    font-size: 0.75rem;
+    margin-top: 1px;
+  }
+
   .sidebar-menu {
     flex-direction: row;
     width: 100%;
@@ -743,19 +743,18 @@ th {
     user-select: none;
   }
 
-  /* LA BURBUJA MAGNÉTICA QUE PERSIGUE TU DEDO */
   .nav-indicator {
     display: block;
     position: absolute;
     top: 4px;
     left: 4px;
     height: calc(100% - 8px);
-    width: calc(33.333% - 5px); /* Se autoajusta dinámicamente con JS */
+    width: calc(33.333% - 5px);
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 204, 82, 0.15), inset 0 0 0 1px rgba(0, 204, 82, 0.1);
     z-index: 1;
-    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1); /* Curva líquida fluida */
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     pointer-events: none;
   }
 
@@ -781,7 +780,6 @@ th {
     transition: color 0.25s ease, transform 0.25s ease;
   }
 
-  /* Cuando la burbuja está encima, el icono se ilumina de neón y crece */
   .menu-btn.active i {
     color: var(--green-neon) !important;
     opacity: 1 !important;
@@ -805,11 +803,39 @@ th {
     display: none;
   }
 
+  /* Blindaje del lienzo contra el historial nativo del teléfono */
   .content-panel {
     margin-left: 0;
     padding: 1.5rem 1rem;
     overflow-y: auto;
     height: calc(100vh - 120px);
     height: calc(100dvh - 120px);
+    touch-action: pan-y !important; /* Libera el deslizamiento horizontal para JS */
+  }
+}
+
+@media (max-width: 440px) {
+  form {
+    gap: 0.8rem;
+  }
+  
+  input, textarea, .dropdown-trigger, .dropdown-menu li {
+    padding: 11px 14px 11px 38px;
+    font-size: 16px !important; 
+  }
+  
+  .dropdown-menu li {
+    padding-left: 14px;
+  }
+
+  .input-icon, .dropdown-icon-left {
+    left: 12px;
+  }
+  .toggle-password {
+    right: 12px;
+  }
+  .checkbox-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
