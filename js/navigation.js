@@ -1,8 +1,8 @@
-const menuButtons  = document.querySelectorAll('.menu-btn');
+const menuButtons = document.querySelectorAll('.menu-btn');
 const crudSections = document.querySelectorAll('.crud-section');
 const navIndicator = document.querySelector('.nav-indicator');
-const sidebarMenu  = document.querySelector('.sidebar-menu');
-const panelsOrder  = ['panel-catalog', 'panel-categories', 'panel-occasions'];
+const sidebarMenu = document.querySelector('.sidebar-menu');
+const panelsOrder = ['panel-catalog', 'panel-categories', 'panel-occasions'];
 
 function getActivePanelIndex() {
   const active = Array.from(crudSections).find(s => s.classList.contains('active'));
@@ -46,43 +46,49 @@ setTimeout(() => {
 window.addEventListener('resize', () => setIndicator(getActivePanelIndex(), false));
 
 if (sidebarMenu && navIndicator) {
-  let dragging       = false;
-  let startX         = 0;
-  let startIndex     = 0;
-  let liveIndex      = 0;
-  let pointerId      = null;
+  let dragging = false;
+  let startX = 0;
+  let startIndex = 0;
+  let liveIndex = 0;
+  let pointerId = null;
+
+
 
   sidebarMenu.addEventListener('pointerdown', e => {
     if (window.innerWidth > 860) return;
-    dragging   = true;
-    startX     = e.clientX;
+    dragging = false;
+    startX = e.clientX;
     startIndex = getActivePanelIndex();
-    liveIndex  = startIndex;
-    pointerId  = e.pointerId;
+    liveIndex = startIndex;
+    pointerId = e.pointerId;
     sidebarMenu.setPointerCapture(e.pointerId);
-    navIndicator.style.transition = 'none';
   });
 
   sidebarMenu.addEventListener('pointermove', e => {
-    if (!dragging || window.innerWidth > 860) return;
-    if (e.pointerId !== pointerId) return;
+  if (window.innerWidth > 860) return;
+  if (e.pointerId !== pointerId) return;
 
-    const menuW   = sidebarMenu.offsetWidth - 8;
-    const stepPx  = menuW / 3;
-    const dx      = e.clientX - startX;
-    const raw     = startIndex + dx / stepPx;
-    const clamped = Math.min(Math.max(raw, 0), panelsOrder.length - 1);
+  const dx = e.clientX - startX;
+  if (!dragging && Math.abs(dx) < 6) return;
 
-    sidebarMenu.style.setProperty('--indicator-index', clamped);
+  if (!dragging) {
+    dragging = true;
+    navIndicator.style.transition = 'none';
+  }
 
-    const snapped = Math.round(clamped);
-    if (snapped !== Math.round(liveIndex)) {
-      liveIndex = clamped;
-      setActiveBtn(snapped);
-    } else {
-      liveIndex = clamped;
-    }
-  });
+  const menuW   = sidebarMenu.offsetWidth - 8;
+  const stepPx  = menuW / 3;
+  const raw     = startIndex + dx / stepPx;
+  const clamped = Math.min(Math.max(raw, 0), panelsOrder.length - 1);
+
+  sidebarMenu.style.setProperty('--indicator-index', clamped);
+
+  const snapped = Math.round(clamped);
+  if (snapped !== Math.round(liveIndex)) {
+    setActiveBtn(snapped);
+  }
+  liveIndex = clamped;
+});
 
   function endDrag() {
     if (!dragging) return;
@@ -92,19 +98,19 @@ if (sidebarMenu && navIndicator) {
     switchPanel(panelsOrder[finalIdx], true);
   }
 
-  sidebarMenu.addEventListener('pointerup',     endDrag);
+  sidebarMenu.addEventListener('pointerup', endDrag);
   sidebarMenu.addEventListener('pointercancel', endDrag);
 }
 
 let swipeStartX = 0;
 let swipeStartY = 0;
-let swipeOnNav  = false;
+let swipeOnNav = false;
 
 window.addEventListener('touchstart', e => {
   if (window.innerWidth > 860) return;
   swipeStartX = e.touches[0].clientX;
   swipeStartY = e.touches[0].clientY;
-  swipeOnNav  = sidebarMenu?.contains(e.target) ?? false;
+  swipeOnNav = sidebarMenu?.contains(e.target) ?? false;
 }, { passive: true });
 
 window.addEventListener('touchend', e => {
