@@ -1,13 +1,14 @@
 :root {
-  --bg-deep: #0b140d;
-  --bg-gradient: linear-gradient(135deg, #0b140d 0%, #142417 50%, #1f3623 100%);
-  --green-neon: #00ff66;
-  --green-glow: rgba(0, 255, 102, 0.2);
-  --sand-gold: #d4af37;
-  --sand-light: #f3e5ab;
-  --glass-bg: rgba(255, 255, 255, 0.02);
-  --glass-border: rgba(0, 255, 102, 0.2);
-  --input-bg: rgba(0, 0, 0, 0.4);
+  --bg-cream: #f4f1ea;
+  --bg-gradient: linear-gradient(135deg, #f4f1ea 0%, #e8e3d7 50%, #ded7c6 100%);
+  --green-corporate: #142417;
+  --green-neon: #00cc52;
+  --green-glow: rgba(0, 204, 82, 0.1);
+  --sand-gold: #c59b27;
+  --sand-light: #8e7323;
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(20, 36, 23, 0.12);
+  --input-bg: rgba(255, 255, 255, 0.7);
 }
 
 * {
@@ -17,10 +18,12 @@
 }
 
 body {
-  background: var(--bg-deep);
+  background: var(--bg-cream);
   background: var(--bg-gradient);
+  color: var(--green-corporate);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,14 +32,17 @@ body {
   padding: 20px;
 }
 
+html {
+  height: -webkit-fill-available;
+}
+
 body::after {
   content: '';
   position: absolute;
-  width: 350px;
-  height: 350px;
+  width: 300px;
+  height: 300px;
   background: var(--green-glow);
-  filter: blur(120px);
+  filter: blur(100px);
   border-radius: 50%;
   z-index: 0;
-  animation: cyberGlow 10s ease-in-out infinite;
 }
