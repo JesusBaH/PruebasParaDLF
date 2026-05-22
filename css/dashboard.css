@@ -90,6 +90,12 @@
   flex-direction: column;
   gap: 8px;
   margin-bottom: auto;
+  position: relative;
+}
+
+/* Oculta la burbuja líquida móvil cuando estás en la computadora */
+.nav-indicator {
+  display: none;
 }
 
 .menu-btn {
@@ -107,6 +113,8 @@
   align-items: center;
   gap: 12px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
 }
 
 .menu-btn i {
@@ -158,7 +166,6 @@
   box-shadow: 0 5px 15px rgba(255, 59, 48, 0.3);
 }
 
-/* LIENZO DE CONTENIDO DERECHO */
 .content-panel {
   flex: 1;
   height: 100%;
@@ -166,7 +173,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  position: relative;
 }
 
 .crud-section {
@@ -174,12 +180,11 @@
   flex-direction: column;
   gap: 2.5rem;
   width: 100%;
-  will-change: transform, opacity;
 }
 
 .crud-section.active {
   display: flex;
-  animation: fadeInMobileFriendly 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInMobileFriendly 0.35s ease-out forwards;
 }
 
 .dashboard-card {
@@ -680,7 +685,7 @@ th {
   font-weight: 600;
 }
 
-/* INTERFAZ EN MÓVIL: LIQUID GLASS NAV + CANVAS SWIPE */
+/* INTERFAZ EN MÓVIL: LIQUID GLASS ACTUALIZADO CON BURBUJA MAGNÉTICA */
 @media (max-width: 860px) {
   .dashboard-wrapper {
     flex-direction: column;
@@ -725,26 +730,33 @@ th {
     margin-bottom: 0;
   }
 
-  .sidebar-info span {
-    font-size: 0.95rem;
-    line-height: 1.2;
-  }
-
-  .sidebar-info p {
-    font-size: 0.75rem;
-    margin-top: 1px;
-  }
-
-  /* EFECTO LIQUID GLASS: UNIFICADO SIN RECUADROS INDIVIDUALES */
+  /* PASTILLA INTEGRADA DE CRISTAL LÍQUIDO */
   .sidebar-menu {
     flex-direction: row;
     width: 100%;
     gap: 0;
     margin-top: 0;
-    background: rgba(20, 36, 23, 0.04); /* Pastilla única de cristal esmerilado de fondo */
+    background: rgba(20, 36, 23, 0.04);
     padding: 4px;
     border-radius: 14px;
     position: relative;
+    user-select: none;
+  }
+
+  /* LA BURBUJA MAGNÉTICA QUE PERSIGUE TU DEDO */
+  .nav-indicator {
+    display: block;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(33.333% - 5px); /* Se autoajusta dinámicamente con JS */
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 204, 82, 0.15), inset 0 0 0 1px rgba(0, 204, 82, 0.1);
+    z-index: 1;
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1); /* Curva líquida fluida */
+    pointer-events: none;
   }
 
   .menu-btn {
@@ -752,9 +764,10 @@ th {
     flex: 1;
     justify-content: center;
     border-radius: 10px;
-    background: transparent !important; /* Remueve los fondos rígidos blancos antiguos */
+    background: transparent !important;
     border: 1px solid transparent !important;
     box-shadow: none !important;
+    z-index: 2;
   }
 
   .menu-btn span {
@@ -765,15 +778,15 @@ th {
     font-size: 1.25rem !important;
     color: var(--green-corporate);
     opacity: 0.45;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.25s ease, transform 0.25s ease;
   }
 
-  /* Resplandor e iluminación fluida al activarse */
+  /* Cuando la burbuja está encima, el icono se ilumina de neón y crece */
   .menu-btn.active i {
     color: var(--green-neon) !important;
     opacity: 1 !important;
     transform: scale(1.1);
-    filter: drop-shadow(0 0 8px rgba(0, 204, 82, 0.5));
+    filter: drop-shadow(0 0 4px rgba(0, 204, 82, 0.3));
   }
 
   .btn-logout {
@@ -792,43 +805,11 @@ th {
     display: none;
   }
 
-  /* PANEL DE TRABAJO CON SCROLL CONTROLADO EN MÓVIL */
   .content-panel {
     margin-left: 0;
     padding: 1.5rem 1rem;
     overflow-y: auto;
     height: calc(100vh - 120px);
     height: calc(100dvh - 120px);
-  }
-
-  .dashboard-card, .management-card {
-    max-width: 100%;
-    padding: 1.5rem 1.1rem;
-  }
-}
-
-@media (max-width: 440px) {
-  form {
-    gap: 0.8rem;
-  }
-  
-  input, textarea, .dropdown-trigger, .dropdown-menu li {
-    padding: 11px 14px 11px 38px;
-    font-size: 16px !important; 
-  }
-  
-  .dropdown-menu li {
-    padding-left: 14px;
-  }
-
-  .input-icon, .dropdown-icon-left {
-    left: 12px;
-  }
-  .toggle-password {
-    right: 12px;
-  }
-  .checkbox-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
   }
 }

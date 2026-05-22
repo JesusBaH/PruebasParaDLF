@@ -4,16 +4,31 @@ import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/fireba
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { processToJpg } from './converter.js';
 
-// --- LÓGICA DE INTERMITENCIA DE VISTAS (PANELES) ---
+// --- ELEMENTOS DE INTERFAZ LIQUID GLASS ---
 const menuButtons = document.querySelectorAll('.menu-btn');
 const crudSections = document.querySelectorAll('.crud-section');
+const navIndicator = document.querySelector('.nav-indicator');
 const panelsOrder = ['panel-catalog', 'panel-categories', 'panel-occasions'];
 
+// Función para mover la burbuja magnética neón
+function moveIndicator(activeBtn) {
+  if (!navIndicator || window.innerWidth > 860) return;
+  
+  const btnWidth = activeBtn.offsetWidth;
+  const btnLeft = activeBtn.offsetLeft;
+  
+  navIndicator.style.width = `${btnWidth}px`;
+  navIndicator.style.transform = `translateX(${btnLeft - 4}px)`; // Ajuste por el padding del riel
+}
+
 function switchPanel(panelId) {
+  let targetBtn = null;
+
   menuButtons.forEach(btn => {
     btn.classList.remove('active');
     if (btn.getAttribute('data-target') === panelId) {
       btn.classList.add('active');
+      targetBtn = btn;
     }
   });
 
@@ -23,6 +38,18 @@ function switchPanel(panelId) {
       section.classList.add('active');
     }
   });
+
+  if (targetBtn) {
+    moveIndicator(targetBtn);
+  }
+}
+
+// Iniciar posición de la burbuja al cargar la página
+if (menuButtons.length > 0) {
+  setTimeout(() => {
+    const activeBtn = document.querySelector('.menu-btn.active');
+    if (activeBtn) moveIndicator(activeBtn);
+  }, 300);
 }
 
 if (menuButtons) {
@@ -33,7 +60,13 @@ if (menuButtons) {
   });
 }
 
-// --- CONTROLADOR SWIPE CANVAS (DESLIZAMIENTO TÁCTIL) ---
+// Escuchar cambios de tamaño de pantalla para recalcular la burbuja
+window.addEventListener('resize', () => {
+  const activeBtn = document.querySelector('.menu-btn.active');
+  if (activeBtn) moveIndicator(activeBtn);
+});
+
+// --- CANVAS SWIPE (DESLIZAMIENTO TÁCTIL) ---
 const contentPanel = document.querySelector('.content-panel');
 let touchStartX = 0;
 let touchEndX = 0;
@@ -50,21 +83,19 @@ if (contentPanel) {
 }
 
 function handleSwipeGesture() {
-  if (window.innerWidth > 860) return; // Desactivado en computadoras de escritorio
+  if (window.innerWidth > 860) return;
 
   const activeSection = Array.from(crudSections).find(s => s.classList.contains('active'));
   if (!activeSection) return;
 
   const currentIndex = panelsOrder.indexOf(activeSection.id);
   const swipeDistance = touchStartX - touchEndX;
-  const swipeThreshold = 75; // Distancia mínima en píxeles para gatillar el cambio
+  const swipeThreshold = 70; // Sensibilidad de arrastre táctil
 
   if (swipeDistance > swipeThreshold && currentIndex < panelsOrder.length - 1) {
-    // Deslizar a la izquierda -> Siguiente pestaña
     switchPanel(panelsOrder[currentIndex + 1]);
     contentPanel.scrollTop = 0;
   } else if (swipeDistance < -swipeThreshold && currentIndex > 0) {
-    // Deslizar a la derecha -> Pestaña anterior
     switchPanel(panelsOrder[currentIndex - 1]);
     contentPanel.scrollTop = 0;
   }
