@@ -23,17 +23,13 @@ body {
   color: var(--green-corporate);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
-  min-height: -webkit-fill-available;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
-  padding: 20px;
-}
-
-html {
-  height: -webkit-fill-available;
+  padding: 15px;
 }
 
 body::after {
