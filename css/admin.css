@@ -266,7 +266,7 @@ input, textarea {
   border: 1px solid rgba(20, 36, 23, 0.12);
   border-radius: 8px;
   color: var(--green-corporate);
-  font-size: 0.9rem;
+  font-size: 16px; /* Ajuste inicial para navegadores de escritorio modernos */
   outline: none;
   transition: all 0.3s ease;
   z-index: 2;
@@ -501,10 +501,13 @@ input:-webkit-autofill:focus {
   form {
     gap: 0.8rem;
   }
+  
+  /* Forzamos estrictamente los 16px para apagar el zoom automático del móvil */
   input, textarea {
     padding: 11px 14px 11px 38px;
-    font-size: 0.85rem;
+    font-size: 16px !important; 
   }
+  
   .input-icon {
     left: 12px;
   }
