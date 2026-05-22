@@ -25,6 +25,7 @@ resetInactivityTimer();
 
 function renderTable(containerId, data, collectionName) {
   const container = document.getElementById(containerId);
+  if (!container) return;
   container.innerHTML = data.map(doc => `
     <tr>
       <td>${doc.nombre}</td>
@@ -52,8 +53,21 @@ onSnapshot(query(collection(db, "categorias"), orderBy("fecha", "desc")), (snaps
     dropdownMenu.innerHTML = snapshot.docs
       .filter(doc => doc.data().activo)
       .map(doc => `<li class="dropdown-item" data-value="${doc.id}">${doc.data().nombre}</li>`).join('');
+
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.onclick = () => {
+        document.getElementById('itemCategory').value = item.getAttribute('data-value');
+        document.getElementById('dropdownSelectedText').innerText = item.innerText;
+        document.getElementById('dropdownMenuCategories').classList.remove('show');
+      };
+    });
   }
 });
+
+const trigger = document.querySelector('.dropdown-trigger');
+if (trigger) {
+  trigger.onclick = () => document.getElementById('dropdownMenuCategories').classList.toggle('show');
+}
 
 onSnapshot(query(collection(db, "ocasiones"), orderBy("fecha", "desc")), (snapshot) => {
   const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -130,6 +144,8 @@ if (form) {
         nombre: name,
         descripcion: desc,
         imageUrl: url,
+        categoria: document.getElementById('itemCategory').value,
+        ocasiones: Array.from(document.querySelectorAll('input[name="occasion"]:checked')).map(cb => cb.value),
         fecha: serverTimestamp()
       });
       status.innerText = "¡Publicado con éxito! 🌹";
