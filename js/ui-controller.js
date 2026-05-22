@@ -23,6 +23,25 @@ function resetInactivityTimer() {
 });
 resetInactivityTimer();
 
+function updateExclusiveLogic() {
+  const categoryVal = document.getElementById('itemCategory').value;
+  const selectedOccasion = document.querySelector('input[name="occasion"]:checked');
+  const occasionsContainer = document.querySelector('.occasions-sect');
+  const categoryDropdown = document.getElementById('categoryDropdown');
+  
+  if (categoryVal && categoryVal !== "") {
+    occasionsContainer.classList.add('disabled-group');
+  } else {
+    occasionsContainer.classList.remove('disabled-group');
+  }
+  
+  if (selectedOccasion) {
+    categoryDropdown.classList.add('disabled-group');
+  } else {
+    categoryDropdown.classList.remove('disabled-group');
+  }
+}
+
 function renderTable(containerId, data, collectionName) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -50,8 +69,8 @@ onSnapshot(query(collection(db, "categorias"), orderBy("fecha", "desc")), (snaps
   
   const dropdownMenu = document.getElementById('dropdownMenuCategories');
   if (dropdownMenu) {
-    dropdownMenu.innerHTML = snapshot.docs
-      .filter(doc => doc.data().activo)
+    dropdownMenu.innerHTML = `<li class="dropdown-item" data-value="">Ninguna categoría</li>` + 
+      snapshot.docs.filter(doc => doc.data().activo)
       .map(doc => `<li class="dropdown-item" data-value="${doc.id}">${doc.data().nombre}</li>`).join('');
 
     document.querySelectorAll('.dropdown-item').forEach(item => {
@@ -59,7 +78,36 @@ onSnapshot(query(collection(db, "categorias"), orderBy("fecha", "desc")), (snaps
         document.getElementById('itemCategory').value = item.getAttribute('data-value');
         document.getElementById('dropdownSelectedText').innerText = item.innerText;
         document.getElementById('dropdownMenuCategories').classList.remove('show');
+        updateExclusiveLogic();
       };
+    });
+  }
+});
+
+onSnapshot(query(collection(db, "ocasiones"), orderBy("fecha", "desc")), (snapshot) => {
+  const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  renderTable('occasionsTableBody', data, 'ocasiones');
+  
+  const grid = document.getElementById('checkboxGridOccasions');
+  if (grid) {
+    grid.innerHTML = snapshot.docs.filter(doc => doc.data().activo).map(doc => `
+      <label class="checkbox-item">
+        <input type="radio" name="occasion" value="${doc.id}">
+        <span>${doc.data().nombre}</span>
+      </label>
+    `).join('');
+    
+    document.querySelectorAll('input[name="occasion"]').forEach(cb => {
+      cb.addEventListener('click', function() {
+        if (this.dataset.waschecked === 'true') {
+          this.checked = false;
+          this.dataset.waschecked = 'false';
+        } else {
+          document.querySelectorAll('input[name="occasion"]').forEach(i => i.dataset.waschecked = 'false');
+          this.dataset.waschecked = 'true';
+        }
+        updateExclusiveLogic();
+      });
     });
   }
 });
@@ -68,23 +116,6 @@ const trigger = document.querySelector('.dropdown-trigger');
 if (trigger) {
   trigger.onclick = () => document.getElementById('dropdownMenuCategories').classList.toggle('show');
 }
-
-onSnapshot(query(collection(db, "ocasiones"), orderBy("fecha", "desc")), (snapshot) => {
-  const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  renderTable('occasionsTableBody', data, 'ocasiones');
-  
-  const grid = document.getElementById('checkboxGridOccasions');
-  if (grid) {
-    grid.innerHTML = snapshot.docs
-      .filter(doc => doc.data().activo)
-      .map(doc => `
-        <label class="checkbox-item">
-          <input type="checkbox" name="occasion" value="${doc.id}">
-          <span>${doc.data().nombre}</span>
-        </label>
-      `).join('');
-  }
-});
 
 const fileInput = document.getElementById('itemImg');
 const filePreviewText = document.getElementById('file-name-preview');
@@ -140,17 +171,19 @@ if (form) {
       const snapshot = await uploadBytes(storageRef, jpgBlob);
       const url = await getDownloadURL(snapshot.ref);
       status.innerText = "Guardando datos...";
+      
       await addDoc(collection(db, "productos"), {
         nombre: name,
         descripcion: desc,
         imageUrl: url,
         categoria: document.getElementById('itemCategory').value,
-        ocasiones: Array.from(document.querySelectorAll('input[name="occasion"]:checked')).map(cb => cb.value),
+        ocasiones: document.querySelector('input[name="occasion"]:checked')?.value || null,
         fecha: serverTimestamp()
       });
       status.innerText = "¡Publicado con éxito! 🌹";
       form.reset();
       clearImagePreview();
+      updateExclusiveLogic();
     } catch (error) {
       status.innerText = "Error: " + error.message;
     } finally {
