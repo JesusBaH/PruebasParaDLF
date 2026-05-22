@@ -4,16 +4,15 @@ import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/fireba
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { processToJpg } from './converter.js';
 
-// --- CONTROLADOR DE VISTAS POR PESTAÑAS (TAB SYSTEM) ---
 const menuButtons = document.querySelectorAll('.menu-btn');
 const crudSections = document.querySelectorAll('.crud-section');
+const panelsOrder = ['panel-catalog', 'panel-categories', 'panel-occasions'];
 
 function switchPanel(panelId) {
   menuButtons.forEach(btn => {
     btn.classList.remove('active');
     if (btn.getAttribute('data-target') === panelId) {
       btn.classList.add('active');
-      // Hace que la barra delgada mueva la píldora al centro de la vista móvil
       btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
   });
@@ -35,7 +34,40 @@ if (menuButtons) {
   });
 }
 
-// Elementos compartidos del Catálogo existentes
+let touchStartX = 0;
+let touchStartY = 0;
+
+document.addEventListener('touchstart', (e) => {
+  if (window.innerWidth > 860) return;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+  if (window.innerWidth > 860) return;
+  
+  const touchEndX = e.changedTouches[0].clientX;
+  const touchEndY = e.changedTouches[0].clientY;
+  
+  const deltaX = touchStartX - touchEndX;
+  const deltaY = touchStartY - touchEndY;
+
+  if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 80) {
+    const activeSection = Array.from(crudSections).find(s => s.classList.contains('active'));
+    if (!activeSection) return;
+
+    const currentIndex = panelsOrder.indexOf(activeSection.id);
+
+    if (deltaX > 0 && currentIndex < panelsOrder.length - 1) {
+      switchPanel(panelsOrder[currentIndex + 1]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (deltaX < 0 && currentIndex > 0) {
+      switchPanel(panelsOrder[currentIndex - 1]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+}, { passive: true });
+
 const categorySelect = document.getElementById('itemCategory');
 const occasionCheckboxes = document.querySelectorAll('input[name="occasion"]');
 const fileInput = document.getElementById('itemImg');
