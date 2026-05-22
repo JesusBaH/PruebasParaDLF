@@ -1,33 +1,8 @@
 @import 'base.css';
 
-@keyframes cyberGlow {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(4vw, 4vh) scale(1.15); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-
-@keyframes floatParticles {
-  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-  10% { opacity: 0.4; }
-  90% { opacity: 0.4; }
-  100% { transform: translateY(-10vh) translateX(40px); opacity: 0; }
-}
-
 @keyframes fadeInMobileFriendly {
   0% { opacity: 0; transform: translateY(10px); }
   100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes borderShine {
-  0% { border-color: rgba(20, 36, 23, 0.12); box-shadow: 0 10px 30px rgba(20, 36, 23, 0.04); }
-  50% { border-color: rgba(0, 204, 82, 0.35); box-shadow: 0 15px 35px rgba(0, 204, 82, 0.06); }
-  100% { border-color: rgba(20, 36, 23, 0.12); box-shadow: 0 10px 30px rgba(20, 36, 23, 0.04); }
-}
-
-@keyframes logoPulse {
-  0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 204, 82, 0.15); }
-  50% { transform: scale(1.03); box-shadow: 0 0 25px rgba(0, 204, 82, 0.35); }
-  100% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 204, 82, 0.15); }
 }
 
 @keyframes buttonShimmer {
@@ -42,69 +17,15 @@
   100% { box-shadow: 0 4px 10px rgba(197, 155, 39, 0.2); }
 }
 
-/* El bloqueo de desborde se aplica estrictamente solo a la pantalla de acceso */
-.login-screen {
-  position: relative;
-  width: 100%;
-  max-width: 365px;
-  padding: 2.2rem 1.8rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  z-index: 2;
-  text-align: center;
-  opacity: 0;
-  margin: auto;
-  will-change: transform, opacity;
-  animation: fadeInMobileFriendly 0.4s ease-out forwards, borderShine 4s linear infinite;
-}
-
-.logo-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.logo-circle {
-  width: 105px;
-  height: 105px;
-  border-radius: 50%;
-  border: 2px solid var(--green-neon);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  animation: logoPulse 4s ease-in-out infinite;
-  overflow: hidden;
-}
-
-.logo-circle img {
-  width: 75%;
-  height: auto;
-}
-
-.login-screen h1 {
-  color: var(--green-corporate);
-  font-size: 1.1rem;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
-}
-
 .dashboard-wrapper {
   display: flex;
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  z-index: 2;
-  position: fixed;
-  top: 0;
-  left: 0;
+  overflow: hidden;
 }
 
+/* BARRA LATERAL PERFECCIONADA COMPACTA */
 .sidebar-panel {
   width: 280px;
   background: rgba(255, 255, 255, 0.75);
@@ -138,7 +59,7 @@
 
 .sidebar-info {
   text-align: center;
-  margin-bottom: auto;
+  margin-bottom: 2rem; /* Reduce la separación con el menú */
 }
 
 .sidebar-info span {
@@ -156,6 +77,57 @@
   font-weight: 500;
 }
 
+/* MENÚ COMPACTADO NATURALMENTE ALINEADO HACIA ARRIBA */
+.sidebar-menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: auto; /* Empuja únicamente al botón de Cerrar Sesión hacia el fondo */
+}
+
+.menu-btn {
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: var(--green-corporate);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.25s ease;
+}
+
+.menu-btn i {
+  font-size: 1.05rem;
+  opacity: 0.6;
+  width: 20px;
+  text-align: center;
+  transition: opacity 0.2s ease;
+}
+
+.menu-btn:hover {
+  background: rgba(0, 204, 82, 0.05);
+  padding-left: 20px;
+}
+
+.menu-btn.active {
+  background: var(--input-bg);
+  border-color: rgba(20, 36, 23, 0.08);
+  color: var(--green-corporate);
+  font-weight: 600;
+}
+
+.menu-btn.active i {
+  color: var(--green-neon);
+  opacity: 1;
+}
+
 .btn-logout {
   background: transparent;
   border: 1px solid rgba(255, 74, 74, 0.5);
@@ -171,7 +143,6 @@
   gap: 8px;
   width: 100%;
   justify-content: center;
-  margin-top: auto;
 }
 
 .btn-logout:hover {
@@ -184,10 +155,20 @@
 .content-panel {
   flex: 1;
   height: 100%;
-  padding: 2rem;
+  padding: 2.5rem 3rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  display: block;
+}
+
+.crud-section {
+  display: none;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+.crud-section.active {
+  display: flex;
 }
 
 .dashboard-card {
@@ -197,11 +178,17 @@
   padding: 2.2rem 3rem;
   width: 100%;
   max-width: 620px;
-  margin: 0 auto 3rem auto;
-  opacity: 0;
-  height: auto;
-  will-change: transform, opacity;
-  animation: fadeInMobileFriendly 0.4s ease-out 0.1s forwards;
+  margin: 0 auto;
+}
+
+.management-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2.2rem;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
 }
 
 .dashboard-card h2 {
@@ -239,7 +226,7 @@ form {
   top: 15px;
 }
 
-input, textarea, .dropdown-trigger {
+input, textarea {
   width: 100%;
   padding: 13px 16px 13px 44px;
   background: var(--input-bg);
@@ -265,26 +252,26 @@ input:focus, textarea:focus {
   box-shadow: 0 4px 12px rgba(197, 155, 39, 0.08);
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--green-corporate) !important;
-  transition: background-color 5000s ease-in-out 0s;
-  box-shadow: inset 0 0 0px 1000px #ffffff !important;
-}
-
 .custom-dropdown {
   position: relative;
   width: 100%;
-  z-index: 10;
+  z-index: 15;
 }
 
 .dropdown-trigger {
+  width: 100%;
+  padding: 13px 16px 13px 44px;
+  background: var(--input-bg);
+  border: 1px solid rgba(20, 36, 23, 0.12);
+  border-radius: 8px;
+  color: var(--green-corporate);
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
+  transition: all 0.3s ease;
 }
 
 .custom-dropdown.active .dropdown-trigger {
@@ -299,6 +286,7 @@ input:-webkit-autofill:focus {
   color: var(--green-corporate);
   opacity: 0.4;
   font-size: 0.9rem;
+  z-index: 3;
 }
 
 .dropdown-arrow {
@@ -319,44 +307,32 @@ input:-webkit-autofill:focus {
   background: #ffffff;
   border: 1px solid rgba(20, 36, 23, 0.12);
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(20, 36, 23, 0.08);
   padding: 6px;
   list-style: none;
   display: none;
   flex-direction: column;
   gap: 2px;
+  box-shadow: 0 10px 25px rgba(20, 36, 23, 0.08);
   z-index: 99;
 }
 
 .custom-dropdown.active .dropdown-menu {
   display: flex;
-  animation: fadeInMobileFriendly 0.25s ease-out;
 }
 
 .dropdown-menu li {
   padding: 11px 16px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--green-corporate);
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .dropdown-menu li:hover {
   background: rgba(0, 204, 82, 0.06);
-  color: var(--green-corporate);
-  padding-left: 20px;
 }
 
 .custom-dropdown.disabled {
   opacity: 0.4;
-  pointer-events: none;
-}
-
-.dropdown-menu li.disabled-item {
-  opacity: 0.35;
-  cursor: not-allowed;
   pointer-events: none;
 }
 
@@ -396,7 +372,6 @@ input:-webkit-autofill:focus {
   cursor: pointer;
   position: relative;
   user-select: none;
-  transition: opacity 0.25s ease;
 }
 
 .disabled-label {
@@ -407,9 +382,8 @@ input:-webkit-autofill:focus {
 .checkbox-label input {
   position: absolute;
   opacity: 0;
-  cursor: pointer;
-  height: 0;
   width: 0;
+  height: 0;
 }
 
 .custom-checkbox {
@@ -447,16 +421,6 @@ input:-webkit-autofill:focus {
 
 .checkbox-label input:checked ~ .custom-checkbox:after {
   display: block;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 14px;
-  color: var(--green-corporate);
-  opacity: 0.4;
-  cursor: pointer;
-  padding: 4px;
-  z-index: 3;
 }
 
 .file-input-wrapper {
@@ -501,7 +465,7 @@ input:-webkit-autofill:focus {
   left: 0;
   opacity: 0;
   width: 100%;
-  height: 45px;
+  height: 100%;
   cursor: pointer;
   z-index: 4;
 }
@@ -522,8 +486,8 @@ input:-webkit-autofill:focus {
   max-height: 380px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(20, 36, 23, 0.08);
   background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(20, 36, 23, 0.08);
   justify-content: center;
   align-items: center;
   padding: 8px;
@@ -532,7 +496,6 @@ input:-webkit-autofill:focus {
 
 .image-preview-container.active {
   display: flex;
-  animation: fadeInMobileFriendly 0.3s ease-out;
 }
 
 .image-preview-container img {
@@ -552,24 +515,61 @@ input:-webkit-autofill:focus {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(20, 36, 23, 0.15);
   color: #ff3b30;
-  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(20, 36, 23, 0.06);
+}
+
+th {
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.td-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
   transition: all 0.2s ease;
-  z-index: 5;
 }
 
-.btn-remove-image:hover {
-  background: #ff3b30;
-  color: #ffffff;
-  border-color: #ff3b30;
-  transform: scale(1.05);
-}
+.btn-edit { color: var(--sand-gold); background: rgba(197, 155, 39, 0.08); }
+.btn-edit:hover { background: var(--sand-gold); color: white; }
+.btn-delete { color: #ff3b30; background: rgba(255, 59, 48, 0.08); }
+.btn-delete:hover { background: #ff3b30; color: white; }
 
-.login-screen button, .btn-primary {
+.btn-primary {
   position: relative;
   margin-top: 0.2rem;
   padding: 13px;
@@ -582,13 +582,12 @@ input:-webkit-autofill:focus {
   letter-spacing: 0.5px;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(20, 36, 23, 0.1);
   width: 100%;
   z-index: 2;
+  transition: all 0.3s ease;
 }
 
-.login-screen button::before, .btn-primary::before {
+.btn-primary::before {
   content: '';
   position: absolute;
   top: 0;
@@ -600,7 +599,7 @@ input:-webkit-autofill:focus {
   animation: buttonShimmer 5s ease-in-out infinite;
 }
 
-.login-screen button:hover, .btn-primary:hover {
+.btn-primary:hover {
   background: var(--sand-gold);
   border-color: var(--sand-gold);
   color: var(--green-corporate);
@@ -608,15 +607,60 @@ input:-webkit-autofill:focus {
   animation: buttonGlowPulse 2s infinite;
 }
 
-.login-screen button:hover::before, .btn-primary:hover::before {
-  animation: none;
+.crud-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 20, 13, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.login-screen button:active, .btn-primary:active {
-  transform: translateY(1px) scale(0.99);
+.crud-modal.active {
+  display: flex;
 }
 
-#status, #loginStatus {
+.modal-content {
+  background: #ffffff;
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeInMobileFriendly 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-content h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--green-corporate);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.close-modal {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  color: rgba(20, 36, 23, 0.4);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.close-modal:hover {
+  color: #ff3b30;
+}
+
+#status {
   font-size: 0.8rem;
   color: var(--sand-light);
   margin-top: 4px;
@@ -627,88 +671,60 @@ input:-webkit-autofill:focus {
 
 @media (max-width: 860px) {
   .dashboard-wrapper {
-    position: relative;
     flex-direction: column;
     height: auto;
+    overflow-y: auto;
   }
   
   .sidebar-panel {
     width: 100%;
     height: auto;
-    padding: 1rem 0.8rem;
+    padding: 0.8rem 1rem;
     border-right: none;
     border-bottom: 1px solid var(--glass-border);
     flex-direction: row;
     justify-content: space-between;
-    gap: 10px;
     position: sticky;
     top: 0;
-    z-index: 100;
   }
 
-  .sidebar-logo-box {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 0;
+  .sidebar-logo-box, .sidebar-info, .sidebar-menu span {
+    display: none;
   }
 
-  .sidebar-info {
-    text-align: left;
-    margin-bottom: 0;
-    flex: 1;
+  .sidebar-menu {
+    flex-direction: row;
+    width: auto;
+    gap: 6px;
+    margin-top: 0;
   }
 
-  .sidebar-info span {
-    font-size: 0.95rem;
+  .menu-btn {
+    padding: 10px;
+    width: auto;
   }
 
   .btn-logout {
     width: auto;
-    padding: 8px 14px;
-    font-size: 0.8rem;
-    margin-top: 0;
+    padding: 10px;
+  }
+  
+  .btn-logout span {
+    display: none;
   }
 
   .content-panel {
-    padding: 1rem;
-    height: auto;
+    padding: 1.5rem 1rem;
     overflow-y: visible;
   }
 
-  .dashboard-card {
+  .dashboard-card, .management-card {
     max-width: 100%;
-    padding: 1.5rem 1.2rem;
-    background: rgba(255, 255, 255, 0.75);
-    margin: 1rem auto;
-  }
-  
-  textarea {
-    height: 90px;
-  }
-
-  .image-preview-container {
-    max-height: 250px;
-  }
-
-  .image-preview-container img {
-    max-height: 236px;
+    padding: 1.5rem 1.1rem;
   }
 }
 
 @media (max-width: 440px) {
-  .login-screen {
-    max-width: 100%;
-    padding: 1.5rem 1.1rem;
-    border-radius: 20px;
-  }
-  .logo-circle {
-    width: 85px;
-    height: 85px;
-  }
-  .login-screen h1 {
-    font-size: 1rem;
-    margin-bottom: 1.2rem;
-  }
   form {
     gap: 0.8rem;
   }
@@ -731,27 +747,5 @@ input:-webkit-autofill:focus {
   .checkbox-grid {
     grid-template-columns: 1fr;
     gap: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar-panel {
-    padding: 0.8rem;
-  }
-  .sidebar-logo-box {
-    width: 40px;
-    height: 40px;
-  }
-  .sidebar-info span {
-    font-size: 0.85rem;
-  }
-  .sidebar-info p {
-    font-size: 0.7rem;
-  }
-  .btn-logout span {
-    display: none;
-  }
-  .btn-logout {
-    padding: 8px 10px;
   }
 }

@@ -6,7 +6,7 @@
   <title>Admin - Diente de León</title>
   <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
   <div class="bg-particles">
@@ -25,89 +25,161 @@
         <span>Panel Administrativo</span>
         <p>Florería Diente de León</p>
       </div>
+
+      <nav class="sidebar-menu">
+        <button class="menu-btn active" data-target="panel-catalog">
+          <i class="fa-solid fa-images"></i> <span>Catálogo / Ramos</span>
+        </button>
+        <button class="menu-btn" data-target="panel-categories">
+          <i class="fa-solid fa-layer-group"></i> <span>Categorías Fijas</span>
+        </button>
+        <button class="menu-btn" data-target="panel-occasions">
+          <i class="fa-solid fa-calendar-star"></i> <span>Fechas Especiales</span> </button>
+      </nav>
+
       <button id="logoutBtn" class="btn-logout">
-        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        <i class="fa-solid fa-right-from-bracket"></i> <span>Cerrar Sesión</span>
       </button>
     </aside>
 
     <main class="content-panel">
-      <div class="dashboard-card">
-        <h2>Subir Nuevo Arreglo</h2>
-        
-        <form id="uploadForm">
-          <div class="input-group">
-            <i class="fa-solid fa-tag input-icon"></i>
-            <input type="text" id="itemName" placeholder="Nombre del ramo" required>
-          </div>
-
-          <div class="input-group">
-            <i class="fa-solid fa-align-left input-icon textarea-icon"></i>
-            <textarea id="itemDesc" placeholder="Descripción / Receta floral" required></textarea>
-          </div>
-
-          <div class="custom-dropdown" id="categoryDropdown">
-            <div class="dropdown-trigger">
-              <i class="fa-solid fa-layer-group dropdown-icon-left"></i>
-              <span id="dropdownSelectedText">Ninguna categoría</span>
-              <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+      
+      <section id="panel-catalog" class="crud-section active">
+        <div class="dashboard-card">
+          <h2>Subir Nuevo Arreglo</h2>
+          <form id="uploadForm">
+            <div class="input-group">
+              <i class="fa-solid fa-tag input-icon"></i>
+              <input type="text" id="itemName" placeholder="Nombre del ramo" required>
             </div>
-            <ul class="dropdown-menu">
-              <li data-value="">Ninguna categoría</li>
-              <li data-value="ramos">Ramos</li>
-              <li data-value="funebre">Fúnebre</li>
-              <li data-value="mega-ramos">Mega Ramos</li>
-              <li data-value="canastas-premium">Canastas y ramos premium</li>
-            </ul>
-            <input type="hidden" id="itemCategory" value="">
-          </div>
-
-          <div class="occasions-sect" id="occasionsSection">
-            <label class="sect-title"><i class="fa-solid fa-calendar-star"></i> Fechas Especiales / Ocasiones</label>
-            <div class="checkbox-grid">
-              <label class="checkbox-label">
-                <input type="checkbox" name="occasion" value="san-valentin">
-                <span class="custom-checkbox"></span>
-                San Valentín
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="occasion" value="dia-madres">
-                <span class="custom-checkbox"></span>
-                Día de las Madres
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="occasion" value="flores-amarillas">
-                <span class="custom-checkbox"></span>
-                Flores Amarillas
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="occasion" value="cumpleanos">
-                <span class="custom-checkbox"></span>
-                Cumpleaños
-              </label>
+            <div class="input-group">
+              <i class="fa-solid fa-align-left input-icon textarea-icon"></i>
+              <textarea id="itemDesc" placeholder="Descripción / Receta floral" required></textarea>
             </div>
-          </div>
-          
-          <div class="file-input-wrapper">
-            <label for="itemImg" class="file-label">
-              <i class="fa-solid fa-cloud-arrow-up"></i>
-              <span>Seleccionar imagen del arreglo</span>
-            </label>
-            <input type="file" id="itemImg" accept="image/*" required>
-            <div id="file-name-preview" class="file-preview-text">Ningún archivo seleccionado</div>
-          </div>
+            
+            <div class="custom-dropdown" id="categoryDropdown">
+              <div class="dropdown-trigger">
+                <i class="fa-solid fa-layer-group dropdown-icon-left"></i>
+                <span id="dropdownSelectedText">Ninguna categoría</span>
+                <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+              </div>
+              <ul class="dropdown-menu" id="dropdownMenuCategories">
+              </ul>
+              <input type="hidden" id="itemCategory" value="">
+            </div>
 
-          <div class="image-preview-container" id="imagePreviewContainer">
-            <button type="button" class="btn-remove-image" id="btnRemoveImage" title="Quitar imagen">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-            <img src="" alt="Vista previa" id="imagePreview">
-          </div>
+            <div class="occasions-sect">
+              <label class="sect-title"><i class="fa-solid fa-calendar-star"></i> Fechas Especiales / Ocasiones</label>
+              <div class="checkbox-grid" id="checkboxGridOccasions">
+              </div>
+            </div>
 
-          <button type="submit" id="submitBtn" class="btn-primary">Publicar en Catálogo</button>
-          <div id="status"></div>
-        </form>
-      </div>
+            <div class="file-input-wrapper">
+              <label for="itemImg" class="file-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Seleccionar imagen del arreglo</span>
+              </label>
+              <input type="file" id="itemImg" accept="image/*" required>
+              <div id="file-name-preview" class="file-preview-text">Ningún archivo seleccionado</div>
+            </div>
+
+            <div class="image-preview-container" id="imagePreviewContainer">
+              <button type="button" class="btn-remove-image" id="btnRemoveImage"><i class="fa-solid fa-xmark"></i></button>
+              <img src="" alt="Vista previa" id="imagePreview">
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-primary">Publicar en Catálogo</button>
+            <div id="status"></div>
+          </form>
+        </div>
+
+        <div class="management-card">
+          <h3>Arreglos Publicados</h3>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Imagen</th>
+                  <th>Nombre</th>
+                  <th>Clasificación</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="catalogTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-categories" class="crud-section">
+        <div class="dashboard-card mb-2">
+          <h2>Gestionar Categorías Fijas</h2>
+          <form id="categoryForm">
+            <div class="input-group">
+              <i class="fa-solid fa-folder-plus input-icon"></i>
+              <input type="text" id="newCategoryName" placeholder="Ej. Jarrones Premium" required>
+            </div>
+            <button type="submit" class="btn-primary">Agregar Categoría</button>
+          </form>
+        </div>
+        <div class="management-card">
+          <h3>Categorías Activas</h3>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre de la Categoría</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="categoriesTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-occasions" class="crud-section">
+        <div class="dashboard-card mb-2">
+          <h2>Gestionar Fechas Especiales</h2>
+          <form id="occasionForm">
+            <div class="input-group">
+              <i class="fa-solid fa-calendar-plus input-icon"></i>
+              <input type="text" id="newOccasionName" placeholder="Ej. Graduaciones" required>
+            </div>
+            <button type="submit" class="btn-primary">Agregar Fecha Especial</button>
+          </form>
+        </div>
+        <div class="management-card">
+          <h3>Fechas Especiales Activas</h3>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre de la Ocasión</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="occasionsTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </main>
+  </div>
+
+  <div class="crud-modal" id="editModal">
+    <div class="modal-content">
+      <button class="close-modal" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      <h3 id="modalTitle">Editar Elemento</h3>
+      <form id="modalEditForm">
+        <div id="modalFormFields"></div>
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+      </form>
+    </div>
   </div>
 
   <script type="module" src="js/upload.js"></script>
