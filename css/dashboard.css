@@ -94,7 +94,7 @@
 }
 
 .nav-indicator {
-  display: none;
+  display: none; /* Se apaga el controlador conflictivo antiguo */
 }
 
 .menu-btn {
@@ -111,9 +111,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  z-index: 2;
+  transition: all 0.25s ease;
 }
 
 .menu-btn i {
@@ -165,7 +163,7 @@
   box-shadow: 0 5px 15px rgba(255, 59, 48, 0.3);
 }
 
-/* LIENZO DE CONTROL CON TOUCH-ACTION DINÁMICO */
+/* LIENZO DE TRABAJO GENERAL */
 .content-panel {
   flex: 1;
   height: 100%;
@@ -676,7 +674,16 @@ th {
   color: #ff3b30;
 }
 
-/* CLAVE PARA EL DESLIZAMIENTO TÁCTIL (PROHÍBE NAVEGACIONES HORIZONTALES DEL NAVEGADOR) */
+#status {
+  font-size: 0.8rem;
+  color: var(--sand-light);
+  margin-top: 4px;
+  min-height: 16px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* EFECTO REVOLUCIONARIO: LIQUID LIQUID FLUID TABS (ESTILO META LIQUIDO) */
 @media (max-width: 860px) {
   .dashboard-wrapper {
     flex-direction: column;
@@ -721,52 +728,35 @@ th {
     margin-bottom: 0;
   }
 
-  .sidebar-info span {
-    font-size: 0.95rem;
-    line-height: 1.2;
-  }
-
-  .sidebar-info p {
-    font-size: 0.75rem;
-    margin-top: 1px;
-  }
-
+  /* RIEL ULTRA DELGADO BOUTIQUE (ELIMINADO RECUADROS GRUESOS) */
   .sidebar-menu {
     flex-direction: row;
     width: 100%;
-    gap: 0;
+    gap: 8px;
     margin-top: 0;
-    background: rgba(20, 36, 23, 0.04);
-    padding: 4px;
-    border-radius: 14px;
-    position: relative;
-    user-select: none;
+    background: rgba(20, 36, 23, 0.03); /* Fondo gris de cristal sumamente tenue */
+    padding: 5px;
+    border-radius: 40px; /* Bordes totalmente redondeados estilo cápsula fina */
+    overflow-x: auto; /* Permite que el dedo deslice las opciones de forma nativa */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .nav-indicator {
-    display: block;
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    height: calc(100% - 8px);
-    width: calc(33.333% - 5px);
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 204, 82, 0.15), inset 0 0 0 1px rgba(0, 204, 82, 0.1);
-    z-index: 1;
-    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-    pointer-events: none;
+  /* Oculta las barras de scroll feas del navegador para mantenerlo estético */
+  .sidebar-menu::-webkit-scrollbar {
+    display: none;
   }
 
   .menu-btn {
-    padding: 10px;
+    padding: 8px 16px;
     flex: 1;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 30px; /* Redondeado tipo píldora delgada */
     background: transparent !important;
-    border: 1px solid transparent !important;
+    border: none !important;
     box-shadow: none !important;
-    z-index: 2;
+    scroll-snap-align: center;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .menu-btn span {
@@ -776,15 +766,21 @@ th {
   .menu-btn i {
     font-size: 1.25rem !important;
     color: var(--green-corporate);
-    opacity: 0.45;
-    transition: color 0.25s ease, transform 0.25s ease;
+    opacity: 0.4;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* BURBUJA ACTIVA: REDONDEADA, DELGADA Y CON RESPLANDOR MAGNÉTICO DE FONDO */
+  .menu-btn.active {
+    background: #ffffff !important; /* La píldora blanca limpia se enciende */
+    box-shadow: 0 4px 12px rgba(0, 204, 82, 0.12) !important;
   }
 
   .menu-btn.active i {
     color: var(--green-neon) !important;
     opacity: 1 !important;
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 4px rgba(0, 204, 82, 0.3));
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px rgba(0, 204, 82, 0.4)); /* Resplandor neón florería */
   }
 
   .btn-logout {
@@ -803,14 +799,12 @@ th {
     display: none;
   }
 
-  /* Blindaje del lienzo contra el historial nativo del teléfono */
   .content-panel {
     margin-left: 0;
     padding: 1.5rem 1rem;
     overflow-y: auto;
     height: calc(100vh - 120px);
     height: calc(100dvh - 120px);
-    touch-action: pan-y !important; /* Libera el deslizamiento horizontal para JS */
   }
 }
 

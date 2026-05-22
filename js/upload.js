@@ -1,32 +1,20 @@
 import { auth, db, storage } from './config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { processToJpg } from './converter.js';
 
-// --- GESTIÓN DE PANELES LIQUID GLASS ---
+// --- CONTROLADOR DE VISTAS POR PESTAÑAS (TAB SYSTEM) ---
 const menuButtons = document.querySelectorAll('.menu-btn');
 const crudSections = document.querySelectorAll('.crud-section');
-const navIndicator = document.querySelector('.nav-indicator');
-const panelsOrder = ['panel-catalog', 'panel-categories', 'panel-occasions'];
-
-function moveIndicator(activeBtn) {
-  if (!navIndicator || window.innerWidth > 860) return;
-  const btnWidth = activeBtn.offsetWidth;
-  const btnLeft = activeBtn.offsetLeft;
-  
-  navIndicator.style.width = `${btnWidth}px`;
-  navIndicator.style.transform = `translateX(${btnLeft - 4}px)`; // Sincronización milimétrica con el padding del riel
-}
 
 function switchPanel(panelId) {
-  let targetBtn = null;
-
   menuButtons.forEach(btn => {
     btn.classList.remove('active');
     if (btn.getAttribute('data-target') === panelId) {
       btn.classList.add('active');
-      targetBtn = btn;
+      // Hace que la barra delgada mueva la píldora al centro de la vista móvil
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
   });
 
@@ -36,68 +24,15 @@ function switchPanel(panelId) {
       section.classList.add('active');
     }
   });
-
-  if (targetBtn) {
-    moveIndicator(targetBtn);
-  }
-}
-
-if (menuButtons.length > 0) {
-  setTimeout(() => {
-    const activeBtn = document.querySelector('.menu-btn.active');
-    if (activeBtn) moveIndicator(activeBtn);
-  }, 350);
 }
 
 if (menuButtons) {
   menuButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       switchPanel(btn.getAttribute('data-target'));
     });
   });
-}
-
-window.addEventListener('resize', () => {
-  const activeBtn = document.querySelector('.menu-btn.active');
-  if (activeBtn) moveIndicator(activeBtn);
-});
-
-// --- CAPTURA DE GESTOS TÁCTILES ULTRA-SENSITIVOS (SWIPE CANVAS) ---
-const contentPanel = document.querySelector('.content-panel');
-let touchStartX = 0;
-let touchStartY = 0;
-
-if (contentPanel) {
-  contentPanel.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  contentPanel.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-    
-    const deltaX = touchStartX - touchEndX;
-    const deltaY = touchStartY - touchEndY;
-
-    // Condición: Solo cambia si el arrastre es predominantemente horizontal y no vertical
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
-      const activeSection = Array.from(crudSections).find(s => s.classList.contains('active'));
-      if (!activeSection) return;
-
-      const currentIndex = panelsOrder.indexOf(activeSection.id);
-
-      if (deltaX > 0 && currentIndex < panelsOrder.length - 1) {
-        // Swipe Izquierda -> Siguiente panel
-        switchPanel(panelsOrder[currentIndex + 1]);
-        contentPanel.scrollTop = 0;
-      } else if (deltaX < 0 && currentIndex > 0) {
-        // Swipe Derecha -> Panel anterior
-        switchPanel(panelsOrder[currentIndex - 1]);
-        contentPanel.scrollTop = 0;
-      }
-    }
-  }, { passive: true });
 }
 
 // Elementos compartidos del Catálogo existentes
