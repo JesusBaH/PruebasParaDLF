@@ -8,26 +8,26 @@
 
 @keyframes floatParticles {
   0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-  10% { opacity: 0.3; }
-  90% { opacity: 0.3; }
+  10% { opacity: 0.2; }
+  90% { opacity: 0.2; }
   100% { transform: translateY(-10vh) translateX(40px); opacity: 0; }
 }
 
-@keyframes glassCurtainEntrance {
-  0% { opacity: 0; transform: scale(0.97) translateY(30px); filter: blur(10px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+@keyframes fadeInMobileFriendly {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes borderShine {
-  0% { border-color: rgba(0, 255, 102, 0.15); box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); }
-  50% { border-color: rgba(0, 255, 102, 0.35); box-shadow: 0 0 35px rgba(0, 255, 102, 0.1); }
-  100% { border-color: rgba(0, 255, 102, 0.15); box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); }
+  0% { border-color: rgba(0, 255, 102, 0.15); box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
+  50% { border-color: rgba(0, 255, 102, 0.35); box-shadow: 0 0 25px rgba(0, 255, 102, 0.05); }
+  100% { border-color: rgba(0, 255, 102, 0.15); box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
 }
 
 @keyframes logoPulse {
-  0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 255, 102, 0.2); }
-  50% { transform: scale(1.04); box-shadow: 0 0 40px rgba(0, 255, 102, 0.5); }
-  100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 255, 102, 0.2); }
+  0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 255, 102, 0.15); }
+  50% { transform: scale(1.03); box-shadow: 0 0 30px rgba(0, 255, 102, 0.3); }
+  100% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 255, 102, 0.15); }
 }
 
 @keyframes buttonShimmer {
@@ -37,9 +37,9 @@
 }
 
 @keyframes buttonGlowPulse {
-  0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.2), 0 0 0 0 rgba(212, 175, 55, 0.2); }
-  50% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.6), 0 0 0 8px rgba(212, 175, 55, 0); }
-  100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.2), 0 0 0 0 rgba(212, 175, 55, 0); }
+  0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+  100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
 }
 
 body {
@@ -57,46 +57,43 @@ body {
 .particle {
   position: absolute;
   bottom: -20px;
-  background: rgba(0, 255, 102, 0.12);
+  background: rgba(0, 255, 102, 0.08);
   border-radius: 50%;
   animation: floatParticles infinite linear;
 }
 
-.particle:nth-child(1) { width: 4px; height: 4px; left: 15%; animation-duration: 8s; }
-.particle:nth-child(2) { width: 5px; height: 5px; left: 45%; animation-duration: 12s; animation-delay: 2s; }
-.particle:nth-child(3) { width: 3px; height: 3px; left: 75%; animation-duration: 9s; animation-delay: 4s; }
-.particle:nth-child(4) { width: 6px; height: 6px; left: 85%; animation-duration: 11s; animation-delay: 1s; }
+.particle:nth-child(1) { width: 4px; height: 4px; left: 15%; animation-duration: 10s; }
+.particle:nth-child(2) { width: 5px; height: 5px; left: 45%; animation-duration: 14s; animation-delay: 2s; }
+.particle:nth-child(3) { width: 3px; height: 3px; left: 75%; animation-duration: 11s; animation-delay: 4s; }
+.particle:nth-child(4) { width: 6px; height: 6px; left: 85%; animation-duration: 13s; animation-delay: 1s; }
 
-/* CONTENEDOR DEL LOGIN SHIELD */
 .login-screen {
   position: relative;
   width: 100%;
   max-width: 400px;
-  padding: 3.5rem 2.2rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: 32px;
+  padding: 3rem 2rem;
+  background: rgba(14, 27, 17, 0.85);
+  border: 1px solid rgba(0, 255, 102, 0.2);
+  border-radius: 28px;
   z-index: 2;
   text-align: center;
   opacity: 0;
   margin: auto;
-  transform-origin: center center;
-  animation: glassCurtainEntrance 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards, borderShine 4s linear infinite;
+  will-change: transform, opacity;
+  animation: fadeInMobileFriendly 0.4s ease-out forwards, borderShine 4s linear infinite;
 }
 
 .logo-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.5rem;
 }
 
 .logo-circle {
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  border: 3px solid var(--green-neon);
+  border: 2px solid var(--green-neon);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,22 +105,21 @@ body {
 .logo-circle img {
   width: 75%;
   height: auto;
-  filter: drop-shadow(0 0 8px var(--green-neon));
+  filter: drop-shadow(0 0 6px var(--green-neon));
 }
 
 .login-screen h1 {
   color: #ffffff;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 400;
   letter-spacing: 0.5px;
-  margin-bottom: 2.2rem;
+  margin-bottom: 2rem;
   line-height: 1.4;
   background: linear-gradient(to right, #ffffff, var(--sand-light));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* INTERFAZ DISTRIBUIDA DEL DASHBOARD */
 .dashboard-wrapper {
   display: flex;
   width: 100%;
@@ -134,9 +130,7 @@ body {
 
 .sidebar-panel {
   width: 300px;
-  background: rgba(11, 20, 13, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(11, 20, 13, 0.9);
   border-right: 1px solid var(--glass-border);
   padding: 3rem 2rem;
   display: flex;
@@ -149,8 +143,8 @@ body {
 }
 
 .sidebar-logo-box {
-  width: 140px;
-  height: 140px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   border: 2px solid var(--green-neon);
   background: rgba(0, 0, 0, 0.2);
@@ -158,7 +152,7 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 255, 102, 0.15);
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
   margin-bottom: 1.5rem;
 }
 
@@ -207,33 +201,32 @@ body {
   background: #ff4a4a;
   color: #ffffff;
   box-shadow: 0 0 15px rgba(255, 74, 74, 0.4);
-  transform: translateY(-1px);
 }
 
 .content-panel {
   flex: 1;
   margin-left: 300px;
-  padding: 3rem;
+  padding: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .dashboard-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(14, 27, 17, 0.85);
   border: 1px solid var(--glass-border);
   border-radius: 24px;
-  padding: 3rem 2.5rem;
+  padding: 2.5rem 2rem;
   width: 100%;
   max-width: 520px;
-  animation: glassCurtainEntrance 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: fadeInMobileFriendly 0.4s ease-out 0.1s forwards;
 }
 
 .dashboard-card h2 {
   color: #ffffff;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   margin-bottom: 2rem;
   text-align: center;
@@ -243,11 +236,10 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* COMPONENTES DE CAMPOS Y ENTRADAS */
 form {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.3rem;
 }
 
 .input-group {
@@ -272,27 +264,27 @@ form {
 
 input, textarea {
   width: 100%;
-  padding: 15px 16px 15px 46px;
+  padding: 14px 16px 14px 46px;
   background: var(--input-bg);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   color: #ffffff;
   font-size: 0.95rem;
   outline: none;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   z-index: 2;
 }
 
 textarea {
   resize: vertical;
-  height: 130px;
+  height: 120px;
   font-family: inherit;
 }
 
 input:focus, textarea:focus {
   border-color: var(--sand-gold);
   background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
 }
 
 input:-webkit-autofill,
@@ -300,7 +292,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
   -webkit-text-fill-color: #ffffff !important;
   transition: background-color 5000s ease-in-out 0s;
-  box-shadow: inset 0 0 0px 1000px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: inset 0 0 0px 1000px rgba(0, 0, 0, 0.5) !important;
 }
 
 .toggle-password {
@@ -313,7 +305,6 @@ input:-webkit-autofill:focus {
   z-index: 3;
 }
 
-/* CONTENEDOR INPUT FILE */
 .file-input-wrapper {
   position: relative;
   width: 100%;
@@ -327,9 +318,9 @@ input:-webkit-autofill:focus {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(0, 255, 102, 0.25);
-  padding: 16px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px dashed rgba(0, 255, 102, 0.2);
+  padding: 14px;
   border-radius: 8px;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
@@ -339,7 +330,7 @@ input:-webkit-autofill:focus {
 
 .file-label:hover {
   border-color: var(--green-neon);
-  background: rgba(0, 255, 102, 0.04);
+  background: rgba(0, 255, 102, 0.03);
   color: #ffffff;
 }
 
@@ -354,7 +345,7 @@ input:-webkit-autofill:focus {
   left: 0;
   opacity: 0;
   width: 100%;
-  height: 53px;
+  height: 50px;
   cursor: pointer;
   z-index: 4;
 }
@@ -369,10 +360,9 @@ input:-webkit-autofill:focus {
   white-space: nowrap;
 }
 
-/* BOTÓN PRIMARIO */
 .login-screen button, .btn-primary {
   position: relative;
-  margin-top: 1rem;
+  margin-top: 0.8rem;
   padding: 14px;
   background: transparent;
   border: 2px solid var(--sand-gold);
@@ -383,7 +373,7 @@ input:-webkit-autofill:focus {
   letter-spacing: 1px;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.3s, color 0.3s, transform 0.2s;
   box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
   width: 100%;
   z-index: 2;
@@ -395,16 +385,16 @@ input:-webkit-autofill:focus {
   top: 0;
   width: 40%;
   height: 100%;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
   transform: skewX(-25deg);
   left: -150%;
-  animation: buttonShimmer 4s ease-in-out infinite;
+  animation: buttonShimmer 5s ease-in-out infinite;
 }
 
 .login-screen button:hover, .btn-primary:hover {
   background: var(--sand-gold);
   color: var(--bg-deep);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   animation: buttonGlowPulse 2s infinite;
 }
 
@@ -413,20 +403,17 @@ input:-webkit-autofill:focus {
 }
 
 .login-screen button:active, .btn-primary:active {
-  transform: translateY(1px) scale(0.98);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-  transition: transform 0.1s ease;
+  transform: translateY(1px) scale(0.99);
 }
 
 #status, #loginStatus {
   font-size: 0.85rem;
   color: var(--sand-light);
-  margin-top: 8px;
+  margin-top: 6px;
   min-height: 18px;
   text-align: center;
 }
 
-/* RESPONSIVIDAD (TABLETS Y MÓVILES) */
 @media (max-width: 860px) {
   .dashboard-wrapper {
     flex-direction: column;
@@ -435,7 +422,7 @@ input:-webkit-autofill:focus {
   .sidebar-panel {
     position: relative;
     width: 100%;
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
     border-right: none;
     border-bottom: 1px solid var(--glass-border);
     height: auto;
@@ -443,11 +430,12 @@ input:-webkit-autofill:focus {
     flex-direction: row;
     justify-content: space-between;
     gap: 15px;
+    background: rgba(11, 20, 13, 0.95);
   }
 
   .sidebar-logo-box {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     margin-bottom: 0;
   }
 
@@ -463,7 +451,7 @@ input:-webkit-autofill:focus {
 
   .btn-logout {
     width: auto;
-    padding: 10px 18px;
+    padding: 10px 16px;
     font-size: 0.85rem;
   }
 
@@ -475,13 +463,14 @@ input:-webkit-autofill:focus {
 
   .dashboard-card {
     max-width: 100%;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.2rem;
+    background: rgba(14, 27, 17, 0.95);
   }
 }
 
 @media (max-width: 480px) {
   .sidebar-panel {
-    padding: 1.2rem 1rem;
+    padding: 1rem;
   }
   .sidebar-logo-box {
     width: 45px;
@@ -494,9 +483,9 @@ input:-webkit-autofill:focus {
     font-size: 0.75rem;
   }
   .btn-logout span {
-    display: none; /* Oculta el texto en pantallas muy pequeñas, deja solo el icono */
+    display: none;
   }
   .btn-logout {
-    padding: 10px 14px;
+    padding: 10px;
   }
 }
