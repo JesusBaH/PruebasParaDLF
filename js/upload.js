@@ -4,28 +4,70 @@ import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/fireba
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { processToJpg } from './converter.js';
 
-// --- LÓGICA COHESIVA DE NAVEGACIÓN DINÁMICA ---
+// --- LÓGICA DE INTERMITENCIA DE VISTAS (PANELES) ---
 const menuButtons = document.querySelectorAll('.menu-btn');
 const crudSections = document.querySelectorAll('.crud-section');
+const panelsOrder = ['panel-catalog', 'panel-categories', 'panel-occasions'];
 
-if (menuButtons && crudSections) {
+function switchPanel(panelId) {
+  menuButtons.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-target') === panelId) {
+      btn.classList.add('active');
+    }
+  });
+
+  crudSections.forEach(section => {
+    section.classList.remove('active');
+    if (section.id === panelId) {
+      section.classList.add('active');
+    }
+  });
+}
+
+if (menuButtons) {
   menuButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const targetPanelId = btn.getAttribute('data-target');
-      
-      // Cambiar estado activo en botones
-      menuButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      // Intercambiar sección visible
-      crudSections.forEach(section => {
-        section.classList.remove('active');
-        if (section.id === targetPanelId) {
-          section.classList.add('active');
-        }
-      });
+      switchPanel(btn.getAttribute('data-target'));
     });
   });
+}
+
+// --- CONTROLADOR SWIPE CANVAS (DESLIZAMIENTO TÁCTIL) ---
+const contentPanel = document.querySelector('.content-panel');
+let touchStartX = 0;
+let touchEndX = 0;
+
+if (contentPanel) {
+  contentPanel.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  contentPanel.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipeGesture();
+  }, { passive: true });
+}
+
+function handleSwipeGesture() {
+  if (window.innerWidth > 860) return; // Desactivado en computadoras de escritorio
+
+  const activeSection = Array.from(crudSections).find(s => s.classList.contains('active'));
+  if (!activeSection) return;
+
+  const currentIndex = panelsOrder.indexOf(activeSection.id);
+  const swipeDistance = touchStartX - touchEndX;
+  const swipeThreshold = 75; // Distancia mínima en píxeles para gatillar el cambio
+
+  if (swipeDistance > swipeThreshold && currentIndex < panelsOrder.length - 1) {
+    // Deslizar a la izquierda -> Siguiente pestaña
+    switchPanel(panelsOrder[currentIndex + 1]);
+    contentPanel.scrollTop = 0;
+  } else if (swipeDistance < -swipeThreshold && currentIndex > 0) {
+    // Deslizar a la derecha -> Pestaña anterior
+    switchPanel(panelsOrder[currentIndex - 1]);
+    contentPanel.scrollTop = 0;
+  }
 }
 
 // Elementos compartidos del Catálogo existentes
