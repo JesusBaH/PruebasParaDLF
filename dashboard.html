@@ -44,6 +44,48 @@
             <i class="fa-solid fa-align-left input-icon textarea-icon"></i>
             <textarea id="itemDesc" placeholder="Descripción / Receta floral" required></textarea>
           </div>
+
+          <div class="custom-dropdown" id="categoryDropdown">
+            <div class="dropdown-trigger">
+              <i class="fa-solid fa-layer-group dropdown-icon-left"></i>
+              <span id="dropdownSelectedText">Ninguna categoría</span>
+              <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+            </div>
+            <ul class="dropdown-menu">
+              <li data-value="">Ninguna categoría</li>
+              <li data-value="ramos">Ramos</li>
+              <li data-value="funebre">Fúnebre</li>
+              <li data-value="mega-ramos">Mega Ramos</li>
+              <li data-value="canastas-premium">Canastas y ramos premium</li>
+            </ul>
+            <input type="hidden" id="itemCategory" value="">
+          </div>
+
+          <div class="occasions-sect" id="occasionsSection">
+            <label class="sect-title"><i class="fa-solid fa-calendar-star"></i> Fechas Especiales / Ocasiones</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label">
+                <input type="checkbox" name="occasion" value="san-valentin">
+                <span class="custom-checkbox"></span>
+                San Valentín
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="occasion" value="dia-madres">
+                <span class="custom-checkbox"></span>
+                Día de las Madres
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="occasion" value="flores-amarillas">
+                <span class="custom-checkbox"></span>
+                Flores Amarillas
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="occasion" value="cumpleanos">
+                <span class="custom-checkbox"></span>
+                Cumpleaños
+              </label>
+            </div>
+          </div>
           
           <div class="file-input-wrapper">
             <label for="itemImg" class="file-label">
@@ -69,43 +111,5 @@
   </div>
 
   <script type="module" src="js/upload.js"></script>
-  <script>
-    const fileInput = document.getElementById('itemImg');
-    const filePreviewText = document.getElementById('file-name-preview');
-    const previewContainer = document.getElementById('imagePreviewContainer');
-    const previewImage = document.getElementById('imagePreview');
-    const removeImageBtn = document.getElementById('btnRemoveImage');
-
-    function clearImagePreview() {
-      if (fileInput) fileInput.value = ""; 
-      if (filePreviewText) filePreviewText.innerText = "Ningún archivo seleccionado";
-      if (previewContainer) previewContainer.classList.remove('active');
-      if (previewImage) previewImage.setAttribute('src', '');
-    }
-
-    if (fileInput && filePreviewText && previewContainer && previewImage) {
-      fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          filePreviewText.innerText = file.name;
-          
-          const reader = new FileReader();
-          reader.onload = function(event) {
-            previewImage.setAttribute('src', event.target.result);
-            previewContainer.classList.add('active');
-          }
-          reader.readAsDataURL(file);
-        } else {
-          clearImagePreview();
-        }
-      });
-    }
-
-    if (removeImageBtn) {
-      removeImageBtn.addEventListener('click', () => {
-        clearImagePreview();
-      });
-    }
-  </script>
 </body>
 </html>
