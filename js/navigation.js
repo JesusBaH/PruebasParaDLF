@@ -1,13 +1,25 @@
 const menuButtons = document.querySelectorAll('.menu-btn');
 const crudSections = document.querySelectorAll('.crud-section');
+const navIndicator = document.querySelector('.nav-indicator');
 const panelsOrder = ['panel-catalog', 'panel-categories', 'panel-occasions'];
 
+function moveIndicator(activeBtn) {
+  if (!navIndicator || window.innerWidth > 860) return;
+  const btnWidth = activeBtn.offsetWidth;
+  const btnLeft = activeBtn.offsetLeft;
+  
+  navIndicator.style.width = `${btnWidth - 8}px`;
+  navIndicator.style.transform = `translateX(${btnLeft - 4}px)`;
+}
+
 function switchPanel(panelId) {
+  let targetBtn = null;
+
   menuButtons.forEach(btn => {
     btn.classList.remove('active');
     if (btn.getAttribute('data-target') === panelId) {
       btn.classList.add('active');
-      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      targetBtn = btn;
     }
   });
 
@@ -17,6 +29,18 @@ function switchPanel(panelId) {
       section.classList.add('active');
     }
   });
+
+  if (targetBtn) {
+    moveIndicator(targetBtn);
+    targetBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+}
+
+if (menuButtons.length > 0) {
+  setTimeout(() => {
+    const activeBtn = document.querySelector('.menu-btn.active');
+    if (activeBtn) moveIndicator(activeBtn);
+  }, 350);
 }
 
 if (menuButtons) {
@@ -27,6 +51,11 @@ if (menuButtons) {
     });
   });
 }
+
+window.addEventListener('resize', () => {
+  const activeBtn = document.querySelector('.menu-btn.active');
+  if (activeBtn) moveIndicator(activeBtn);
+});
 
 let touchStartX = 0;
 let touchStartY = 0;

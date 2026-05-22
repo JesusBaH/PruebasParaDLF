@@ -25,7 +25,6 @@
   overflow: hidden;
 }
 
-/* BARRA LATERAL EN ESCRITORIO */
 .sidebar-panel {
   width: 280px;
   background: rgba(255, 255, 255, 0.75);
@@ -94,7 +93,7 @@
 }
 
 .nav-indicator {
-  display: none; /* Se apaga el controlador conflictivo antiguo */
+  display: none;
 }
 
 .menu-btn {
@@ -163,7 +162,6 @@
   box-shadow: 0 5px 15px rgba(255, 59, 48, 0.3);
 }
 
-/* LIENZO DE TRABAJO GENERAL */
 .content-panel {
   flex: 1;
   height: 100%;
@@ -173,13 +171,11 @@
   -webkit-overflow-scrolling: touch;
 }
 
-
 .crud-section {
   display: none;
   flex-direction: column;
   gap: 2.5rem;
   width: 100%;
-  touch-action: pan-y !important;
 }
 
 .crud-section.active {
@@ -685,7 +681,6 @@ th {
   font-weight: 600;
 }
 
-/* EFECTO REVOLUCIONARIO: LIQUID LIQUID FLUID TABS (ESTILO META LIQUIDO) */
 @media (max-width: 860px) {
   .dashboard-wrapper {
     flex-direction: column;
@@ -730,35 +725,44 @@ th {
     margin-bottom: 0;
   }
 
-  /* RIEL ULTRA DELGADO BOUTIQUE (ELIMINADO RECUADROS GRUESOS) */
+  /* CAPSULA REVESTIDA ESTILO PREMIUM */
   .sidebar-menu {
     flex-direction: row;
     width: 100%;
-    gap: 8px;
+    gap: 0;
     margin-top: 0;
-    background: rgba(20, 36, 23, 0.03); /* Fondo gris de cristal sumamente tenue */
-    padding: 5px;
-    border-radius: 40px; /* Bordes totalmente redondeados estilo cápsula fina */
-    overflow-x: auto; /* Permite que el dedo deslice las opciones de forma nativa */
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    background: rgba(20, 36, 23, 0.03);
+    padding: 4px;
+    border-radius: 40px;
+    position: relative;
+    user-select: none;
   }
 
-  /* Oculta las barras de scroll feas del navegador para mantenerlo estético */
-  .sidebar-menu::-webkit-scrollbar {
-    display: none;
+  /* BURBUJA LIQUIDA: SE COMPORTA COMO UNA CAPA INVISIBLE QUE SE DESLIZA */
+  .nav-indicator {
+    display: block;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(33.333% - 6px);
+    background: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 204, 82, 0.12), inset 0 0 0 1px rgba(0, 204, 82, 0.05);
+    z-index: 1;
+    transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1), width 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none; /* Crucial: permite que los clics traspasen la burbuja */
   }
 
   .menu-btn {
-    padding: 8px 16px;
+    padding: 10px;
     flex: 1;
     justify-content: center;
-    border-radius: 30px; /* Redondeado tipo píldora delgada */
+    border-radius: 30px;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    scroll-snap-align: center;
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 2;
   }
 
   .menu-btn span {
@@ -769,20 +773,14 @@ th {
     font-size: 1.25rem !important;
     color: var(--green-corporate);
     opacity: 0.4;
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  /* BURBUJA ACTIVA: REDONDEADA, DELGADA Y CON RESPLANDOR MAGNÉTICO DE FONDO */
-  .menu-btn.active {
-    background: #ffffff !important; /* La píldora blanca limpia se enciende */
-    box-shadow: 0 4px 12px rgba(0, 204, 82, 0.12) !important;
+    transition: color 0.3s ease, transform 0.3s ease;
   }
 
   .menu-btn.active i {
     color: var(--green-neon) !important;
     opacity: 1 !important;
     transform: scale(1.08);
-    filter: drop-shadow(0 0 6px rgba(0, 204, 82, 0.4)); /* Resplandor neón florería */
+    filter: drop-shadow(0 0 4px rgba(0, 204, 82, 0.25));
   }
 
   .btn-logout {
@@ -807,6 +805,15 @@ th {
     overflow-y: auto;
     height: calc(100vh - 120px);
     height: calc(100dvh - 120px);
+    touch-action: pan-y !important; /* Desbloquea el arrastre en el celular */
+  }
+
+  .crud-section {
+    display: none;
+    flex-direction: column;
+    gap: 2.5rem;
+    width: 100%;
+    touch-action: pan-y !important;
   }
 }
 
