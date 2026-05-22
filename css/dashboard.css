@@ -25,6 +25,7 @@
   overflow: hidden;
 }
 
+/* BARRA LATERAL EN ESCRITORIO */
 .sidebar-panel {
   width: 280px;
   background: rgba(255, 255, 255, 0.75);
@@ -35,6 +36,13 @@
   align-items: center;
   height: 100%;
   flex-shrink: 0;
+}
+
+.sidebar-brand-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .sidebar-logo-box {
@@ -101,7 +109,6 @@
   transition: all 0.25s ease;
 }
 
-/* BLINDAJE DE ICONOS EN EL MENÚ */
 .menu-btn i {
   font-size: 1.1rem !important;
   display: inline-block !important;
@@ -659,6 +666,16 @@ th {
   color: #ff3b30;
 }
 
+#status {
+  font-size: 0.8rem;
+  color: var(--sand-light);
+  margin-top: 4px;
+  min-height: 16px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* OBLIGATORIO Y ULTRA-OPTIMIZADO PARA MÓVILES (TOP BAR + TABS) */
 @media (max-width: 860px) {
   .dashboard-wrapper {
     flex-direction: column;
@@ -666,37 +683,90 @@ th {
     overflow-y: auto;
   }
   
+  /* Se convierte en una Top Bar Fija con la marca + el menú de iconos integrado abajo */
   .sidebar-panel {
     width: 100%;
     height: auto;
     padding: 0.8rem 1rem;
     border-right: none;
     border-bottom: 1px solid var(--glass-border);
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 12px;
     position: sticky;
     top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
-  .sidebar-logo-box, .sidebar-info, .sidebar-menu span {
-    display: none;
+  /* Reorganiza el Logo y los textos de la florería en una sola fila compacta */
+  .sidebar-brand-box {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
   }
 
+  .sidebar-logo-box {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0;
+    box-shadow: 0 4px 10px rgba(0, 204, 82, 0.1);
+  }
+
+  .sidebar-info {
+    text-align: left;
+    margin-bottom: 0;
+    display: block;
+  }
+
+  .sidebar-info span {
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  .sidebar-info p {
+    font-size: 0.75rem;
+    margin-top: 1px;
+  }
+
+  /* Menú de iconos flotante responsivo a todo el ancho de la pantalla móvil */
   .sidebar-menu {
     flex-direction: row;
-    width: auto;
+    width: 100%;
     gap: 6px;
     margin-top: 0;
   }
 
   .menu-btn {
     padding: 10px;
-    width: auto;
+    flex: 1; /* Distribuye las 3 pestañas simétricamente a partes iguales */
+    justify-content: center;
+    border-radius: 8px;
   }
 
+  .menu-btn span {
+    display: none; /* Esconde las letras del menú para que no se amontonen */
+  }
+
+  .menu-btn i {
+    font-size: 1.2rem !important;
+    opacity: 0.8;
+  }
+
+  /* El botón de Cerrar Sesión se convierte en un icono flotante discreto en la Top Bar */
   .btn-logout {
-    width: auto;
-    padding: 10px;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    border-color: rgba(255, 74, 74, 0.2);
   }
   
   .btn-logout span {
@@ -704,6 +774,7 @@ th {
   }
 
   .content-panel {
+    margin-left: 0;
     padding: 1.5rem 1rem;
     overflow-y: visible;
   }
