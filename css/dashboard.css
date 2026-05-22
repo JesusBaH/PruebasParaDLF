@@ -25,7 +25,6 @@
   overflow: hidden;
 }
 
-/* BARRA LATERAL PERFECCIONADA COMPACTA */
 .sidebar-panel {
   width: 280px;
   background: rgba(255, 255, 255, 0.75);
@@ -59,7 +58,7 @@
 
 .sidebar-info {
   text-align: center;
-  margin-bottom: 2rem; /* Reduce la separación con el menú */
+  margin-bottom: 2rem;
 }
 
 .sidebar-info span {
@@ -77,13 +76,12 @@
   font-weight: 500;
 }
 
-/* MENÚ COMPACTADO NATURALMENTE ALINEADO HACIA ARRIBA */
 .sidebar-menu {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: auto; /* Empuja únicamente al botón de Cerrar Sesión hacia el fondo */
+  margin-bottom: auto;
 }
 
 .menu-btn {
@@ -103,12 +101,13 @@
   transition: all 0.25s ease;
 }
 
+/* BLINDAJE DE ICONOS EN EL MENÚ */
 .menu-btn i {
-  font-size: 1.05rem;
-  opacity: 0.6;
-  width: 20px;
-  text-align: center;
-  transition: opacity 0.2s ease;
+  font-size: 1.1rem !important;
+  display: inline-block !important;
+  width: 24px !important;
+  text-align: center !important;
+  opacity: 0.7;
 }
 
 .menu-btn:hover {
@@ -124,8 +123,8 @@
 }
 
 .menu-btn.active i {
-  color: var(--green-neon);
-  opacity: 1;
+  color: var(--green-neon) !important;
+  opacity: 1 !important;
 }
 
 .btn-logout {
@@ -658,15 +657,6 @@ th {
 
 .close-modal:hover {
   color: #ff3b30;
-}
-
-#status {
-  font-size: 0.8rem;
-  color: var(--sand-light);
-  margin-top: 4px;
-  min-height: 16px;
-  text-align: center;
-  font-weight: 600;
 }
 
 @media (max-width: 860px) {
