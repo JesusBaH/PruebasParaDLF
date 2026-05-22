@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Diente de León</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="bg-particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <div class="dashboard-wrapper">
+    <aside class="sidebar-panel">
+      <div class="sidebar-logo-box">
+        <img src="img/logo.png" alt="Logo">
+      </div>
+      <div class="sidebar-info">
+        <span>Panel Administrativo</span>
+        <p>Florería Diente de León</p>
+      </div>
+      <button id="logoutBtn" class="btn-logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+      </button>
+    </aside>
+
+    <main class="content-panel">
+      <div class="dashboard-card">
+        <h2>Subir Nuevo Arreglo</h2>
+        
+        <form id="uploadForm">
+          <div class="input-group">
+            <i class="fa-solid fa-tag input-icon"></i>
+            <input type="text" id="itemName" placeholder="Nombre del ramo" required>
+          </div>
+
+          <div class="input-group">
+            <i class="fa-solid fa-align-left input-icon textarea-icon"></i>
+            <textarea id="itemDesc" placeholder="Descripción / Receta floral" required></textarea>
+          </div>
+          
+          <div class="file-input-wrapper">
+            <label for="itemImg" class="file-label">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span>Seleccionar imagen del arreglo</span>
+            </label>
+            <input type="file" id="itemImg" accept="image/*" required>
+            <div id="file-name-preview" class="file-preview-text">Ningún archivo seleccionado</div>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-primary">Publicar en Catálogo</button>
+          <div id="status"></div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/upload.js"></script>
+  <script>
+    const fileInput = document.getElementById('itemImg');
+    const filePreview = document.getElementById('file-name-preview');
+    if (fileInput && filePreview) {
+      fileInput.addEventListener('change', (e) => {
+        const name = e.target.files[0]?.name || "Ningún archivo seleccionado";
+        filePreview.innerText = name;
+      });
+    }
+  </script>
+</body>
+</html>
