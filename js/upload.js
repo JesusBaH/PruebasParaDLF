@@ -1,7 +1,7 @@
 import { auth, db, storage } from './config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { processToJpg } from './converter.js';
 
 const categorySelect = document.getElementById('itemCategory');
@@ -84,6 +84,53 @@ if (form) {
     }
   });
 }
+
+const categoryForm = document.getElementById('categoryForm');
+if (categoryForm) {
+  categoryForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('newCategoryName');
+    try {
+      await addDoc(collection(db, "categorias"), {
+        nombre: input.value,
+        activo: true,
+        fecha: serverTimestamp()
+      });
+      categoryForm.reset();
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+}
+
+const occasionForm = document.getElementById('occasionForm');
+if (occasionForm) {
+  occasionForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('newOccasionName');
+    try {
+      await addDoc(collection(db, "ocasiones"), {
+        nombre: input.value,
+        activo: true,
+        fecha: serverTimestamp()
+      });
+      occasionForm.reset();
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+}
+
+window.toggleStatus = async function(collectionName, docId, currentStatus) {
+  try {
+    const docRef = doc(db, collectionName, docId);
+    await updateDoc(docRef, {
+      activo: !currentStatus
+    });
+  } catch (error) {
+    console.error("Error al actualizar estatus: ", error.message);
+  }
+};
 
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {

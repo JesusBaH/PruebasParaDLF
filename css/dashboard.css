@@ -5,7 +5,6 @@
     opacity: 0;
     transform: translateY(10px);
   }
-
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -16,11 +15,9 @@
   0% {
     left: -150%;
   }
-
   50% {
     left: 150%;
   }
-
   100% {
     left: 150%;
   }
@@ -30,11 +27,9 @@
   0% {
     box-shadow: 0 4px 10px rgba(197, 155, 39, 0.2);
   }
-
   50% {
     box-shadow: 0 6px 20px rgba(197, 155, 39, 0.4);
   }
-
   100% {
     box-shadow: 0 4px 10px rgba(197, 155, 39, 0.2);
   }
@@ -592,6 +587,30 @@ th {
   height: 50px;
   border-radius: 6px;
   object-fit: cover;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  user-select: none;
+  transition: all 0.25s ease;
+}
+
+.status-badge.active {
+  background: rgba(0, 204, 82, 0.1);
+  color: #00cc52;
+  border: 1px solid rgba(0, 204, 82, 0.2);
+}
+
+.status-badge.inactive {
+  background: rgba(20, 36, 23, 0.05);
+  color: rgba(20, 36, 23, 0.4);
+  border: 1px solid rgba(20, 36, 23, 0.1);
 }
 
 .actions-cell {
