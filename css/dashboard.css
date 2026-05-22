@@ -688,7 +688,7 @@ th {
     height: 100dvh;
     overflow: hidden;
   }
-  
+
   .sidebar-panel {
     width: 100%;
     height: auto;
@@ -725,53 +725,50 @@ th {
     margin-bottom: 0;
   }
 
-  /* CAPSULA REVESTIDA ESTILO PREMIUM */
   .sidebar-menu {
     flex-direction: row;
     width: 100%;
     gap: 0;
     margin-top: 0;
-    background: rgba(20, 36, 23, 0.03);
+    background: rgba(20, 36, 23, 0.04);
     padding: 4px;
     border-radius: 40px;
     position: relative;
     user-select: none;
+    --indicator-index: 0;
   }
 
-  /* BURBUJA LIQUIDA: SE COMPORTA COMO UNA CAPA INVISIBLE QUE SE DESLIZA */
- .nav-indicator {
-  display: block;
-  position: absolute;
-  top: 4px;
-  left: 0;
-  height: calc(100% - 8px);
-  width: calc(33.333% - 8px);
-  border-radius: 30px;
-  z-index: 1;
-  pointer-events: none;
-  transition: transform 0.42s cubic-bezier(0.25, 1, 0.5, 1),
-              width     0.42s cubic-bezier(0.25, 1, 0.5, 1);
+  .nav-indicator {
+    display: block;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(33.333% - 8px);
+    border-radius: 30px;
+    z-index: 1;
+    pointer-events: none;
+    transform: translateX(calc(var(--indicator-index) * 100%));
+    transition: transform 0.42s cubic-bezier(0.25, 1, 0.5, 1);
 
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.72) 0%,
-    rgba(255, 255, 255, 0.38) 50%,
-    rgba(255, 255, 255, 0.55) 100%
-  );
-  backdrop-filter: blur(20px) saturate(1.8) brightness(1.1);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8) brightness(1.1);
-
-  border-top:    1px solid rgba(255, 255, 255, 0.90);
-  border-left:   1px solid rgba(255, 255, 255, 0.70);
-  border-right:  1px solid rgba(255, 255, 255, 0.30);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.20);
-
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.08),
-    0 1px 3px  rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.25);
-}
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.90) 0%,
+      rgba(255, 255, 255, 0.60) 50%,
+      rgba(255, 255, 255, 0.75) 100%
+    );
+    backdrop-filter: blur(20px) saturate(1.8) brightness(1.12);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8) brightness(1.12);
+    border-top:    1px solid rgba(255, 255, 255, 0.95);
+    border-left:   1px solid rgba(255, 255, 255, 0.75);
+    border-right:  1px solid rgba(255, 255, 255, 0.35);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.07),
+      0 1px 3px  rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+  }
 
   .menu-btn {
     padding: 10px;
@@ -782,6 +779,7 @@ th {
     border: none !important;
     box-shadow: none !important;
     z-index: 2;
+    position: relative;
   }
 
   .menu-btn span {
@@ -791,15 +789,15 @@ th {
   .menu-btn i {
     font-size: 1.25rem !important;
     color: var(--green-corporate);
-    opacity: 0.4;
-    transition: color 0.3s ease, transform 0.3s ease;
+    opacity: 0.35;
+    transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
   }
 
   .menu-btn.active i {
     color: var(--green-neon) !important;
     opacity: 1 !important;
     transform: scale(1.08);
-    filter: drop-shadow(0 0 4px rgba(0, 204, 82, 0.25));
+    filter: drop-shadow(0 0 4px rgba(0, 204, 82, 0.3));
   }
 
   .btn-logout {
@@ -813,7 +811,7 @@ th {
     border-color: rgba(255, 74, 74, 0.15);
     background: rgba(255, 255, 255, 0.6);
   }
-  
+
   .btn-logout span {
     display: none;
   }
@@ -824,7 +822,7 @@ th {
     overflow-y: auto;
     height: calc(100vh - 120px);
     height: calc(100dvh - 120px);
-    touch-action: pan-y !important; /* Desbloquea el arrastre en el celular */
+    touch-action: pan-y;
   }
 
   .crud-section {
@@ -832,7 +830,7 @@ th {
     flex-direction: column;
     gap: 2.5rem;
     width: 100%;
-    touch-action: pan-y !important;
+    touch-action: pan-y;
   }
 }
 
