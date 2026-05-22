@@ -42,6 +42,11 @@
   100% { box-shadow: 0 4px 10px rgba(197, 155, 39, 0.2); }
 }
 
+body {
+  overflow-x: hidden;
+  position: relative;
+}
+
 .bg-particles {
   position: absolute;
   inset: 0;
@@ -207,7 +212,10 @@
   padding: 2rem;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
 }
 
 .dashboard-card {
@@ -215,20 +223,21 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 2.2rem 1.8rem;
+  border-radius: 24px;
+  padding: 2.5rem 3rem;
   width: 100%;
-  max-width: 480px;
+  max-width: 600px;
   opacity: 0;
+  margin: 1.5rem auto;
   will-change: transform, opacity;
   animation: fadeInMobileFriendly 0.4s ease-out 0.1s forwards;
 }
 
 .dashboard-card h2 {
   color: var(--green-corporate);
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 500;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: center;
   letter-spacing: 0.5px;
 }
@@ -236,7 +245,7 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .input-group {
@@ -261,20 +270,22 @@ form {
 
 input, textarea {
   width: 100%;
-  padding: 12px 14px 12px 42px;
+  padding: 14px 16px 14px 44px;
   background: var(--input-bg);
   border: 1px solid rgba(20, 36, 23, 0.12);
   border-radius: 8px;
   color: var(--green-corporate);
-  font-size: 16px; /* Ajuste inicial para navegadores de escritorio modernos */
+  font-size: 16px;
   outline: none;
   transition: all 0.3s ease;
   z-index: 2;
   font-weight: 500;
 }
 
-input::placeholder, textarea::placeholder {
-  color: rgba(20, 36, 23, 0.35);
+textarea {
+  resize: vertical;
+  height: 120px;
+  font-family: inherit;
 }
 
 input:focus, textarea:focus {
@@ -316,12 +327,12 @@ input:-webkit-autofill:focus {
   gap: 8px;
   background: rgba(255, 255, 255, 0.4);
   border: 1px dashed rgba(0, 204, 82, 0.4);
-  padding: 12px;
+  padding: 14px;
   border-radius: 8px;
   color: var(--green-corporate);
   opacity: 0.8;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
   font-weight: 500;
 }
@@ -343,7 +354,7 @@ input:-webkit-autofill:focus {
   left: 0;
   opacity: 0;
   width: 100%;
-  height: 43px;
+  height: 47px;
   cursor: pointer;
   z-index: 4;
 }
@@ -358,15 +369,70 @@ input:-webkit-autofill:focus {
   white-space: nowrap;
 }
 
+/* CONTENEDOR DE VISTA PREVIA CON BOTÓN FLOTANTE */
+.image-preview-container {
+  display: none;
+  width: 100%;
+  max-height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(20, 36, 23, 0.08);
+  background: rgba(255, 255, 255, 0.5);
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  position: relative; /* Clave para anclar el botón de X */
+}
+
+.image-preview-container.active {
+  display: flex;
+  animation: fadeInMobileFriendly 0.3s ease-out;
+}
+
+.image-preview-container img {
+  max-width: 100%;
+  max-height: 168px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* BOTÓN DE CIERRE (×) */
+.btn-remove-image {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(20, 36, 23, 0.15);
+  color: #ff3b30;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.btn-remove-image:hover {
+  background: #ff3b30;
+  color: #ffffff;
+  border-color: #ff3b30;
+  transform: scale(1.05);
+}
+
 .login-screen button, .btn-primary {
   position: relative;
   margin-top: 0.4rem;
-  padding: 12px;
+  padding: 14px;
   background: var(--green-corporate);
   border: 2px solid var(--green-corporate);
   border-radius: 30px;
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.5px;
   cursor: pointer;
@@ -467,17 +533,27 @@ input:-webkit-autofill:focus {
     padding: 1rem;
     width: 100%;
     height: calc(100dvh - 70px);
-    align-items: center;
+    align-items: flex-start;
+    overflow-y: auto;
   }
 
   .dashboard-card {
     max-width: 100%;
     padding: 1.5rem 1.2rem;
     background: rgba(255, 255, 255, 0.75);
+    margin: 0.5rem auto;
   }
   
   textarea {
     height: 90px;
+  }
+
+  .image-preview-container {
+    max-height: 150px;
+  }
+
+  .image-preview-container img {
+    max-height: 138px;
   }
 }
 
@@ -502,7 +578,6 @@ input:-webkit-autofill:focus {
     gap: 0.8rem;
   }
   
-  /* Forzamos estrictamente los 16px para apagar el zoom automático del móvil */
   input, textarea {
     padding: 11px 14px 11px 38px;
     font-size: 16px !important; 

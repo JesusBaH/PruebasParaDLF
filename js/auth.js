@@ -27,11 +27,11 @@ if (loginForm) {
     const status = document.getElementById('loginStatus');
 
     try {
-      status.innerText = "ACCESING...";
+      status.innerText = "Ingresando...";
       await signInWithEmailAndPassword(auth, email, pass);
       window.location.href = 'dashboard.html';
     } catch (error) {
-      status.innerText = "ACCESS DENIED";
+      status.innerText = "ACCESSO DENEGADO";
       console.error(error);
     }
   });

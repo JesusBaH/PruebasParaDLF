@@ -54,6 +54,13 @@
             <div id="file-name-preview" class="file-preview-text">Ningún archivo seleccionado</div>
           </div>
 
+          <div class="image-preview-container" id="imagePreviewContainer">
+            <button type="button" class="btn-remove-image" id="btnRemoveImage" title="Quitar imagen">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img src="" alt="Vista previa" id="imagePreview">
+          </div>
+
           <button type="submit" id="submitBtn" class="btn-primary">Publicar en Catálogo</button>
           <div id="status"></div>
         </form>
@@ -64,11 +71,39 @@
   <script type="module" src="js/upload.js"></script>
   <script>
     const fileInput = document.getElementById('itemImg');
-    const filePreview = document.getElementById('file-name-preview');
-    if (fileInput && filePreview) {
+    const filePreviewText = document.getElementById('file-name-preview');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const previewImage = document.getElementById('imagePreview');
+    const removeImageBtn = document.getElementById('btnRemoveImage');
+
+    function clearImagePreview() {
+      if (fileInput) fileInput.value = ""; 
+      if (filePreviewText) filePreviewText.innerText = "Ningún archivo seleccionado";
+      if (previewContainer) previewContainer.classList.remove('active');
+      if (previewImage) previewImage.setAttribute('src', '');
+    }
+
+    if (fileInput && filePreviewText && previewContainer && previewImage) {
       fileInput.addEventListener('change', (e) => {
-        const name = e.target.files[0]?.name || "Ningún archivo seleccionado";
-        filePreview.innerText = name;
+        const file = e.target.files[0];
+        if (file) {
+          filePreviewText.innerText = file.name;
+          
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            previewImage.setAttribute('src', event.target.result);
+            previewContainer.classList.add('active');
+          }
+          reader.readAsDataURL(file);
+        } else {
+          clearImagePreview();
+        }
+      });
+    }
+
+    if (removeImageBtn) {
+      removeImageBtn.addEventListener('click', () => {
+        clearImagePreview();
       });
     }
   </script>
