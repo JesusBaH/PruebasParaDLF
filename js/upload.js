@@ -37,13 +37,13 @@ if (menuButtons) {
 let touchStartX = 0;
 let touchStartY = 0;
 
-document.addEventListener('touchstart', (e) => {
+window.addEventListener('touchstart', (e) => {
   if (window.innerWidth > 860) return;
   touchStartX = e.touches[0].clientX;
   touchStartY = e.touches[0].clientY;
 }, { passive: true });
 
-document.addEventListener('touchend', (e) => {
+window.addEventListener('touchend', (e) => {
   if (window.innerWidth > 860) return;
   
   const touchEndX = e.changedTouches[0].clientX;
@@ -52,7 +52,7 @@ document.addEventListener('touchend', (e) => {
   const deltaX = touchStartX - touchEndX;
   const deltaY = touchStartY - touchEndY;
 
-  if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 80) {
+  if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
     const activeSection = Array.from(crudSections).find(s => s.classList.contains('active'));
     if (!activeSection) return;
 
