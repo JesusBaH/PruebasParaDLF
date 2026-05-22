@@ -65,30 +65,30 @@ if (sidebarMenu && navIndicator) {
   });
 
   sidebarMenu.addEventListener('pointermove', e => {
-  if (window.innerWidth > 860) return;
-  if (e.pointerId !== pointerId) return;
+    if (window.innerWidth > 860) return;
+    if (e.pointerId !== pointerId) return;
 
-  const dx = e.clientX - startX;
-  if (!dragging && Math.abs(dx) < 6) return;
+    const dx = e.clientX - startX;
+    if (!dragging && Math.abs(dx) < 6) return;
 
-  if (!dragging) {
-    dragging = true;
-    navIndicator.style.transition = 'none';
-  }
+    if (!dragging) {
+      dragging = true;
+      navIndicator.style.transition = 'none';
+    }
 
-  const menuW   = sidebarMenu.offsetWidth - 8;
-  const stepPx  = menuW / 3;
-  const raw     = startIndex + dx / stepPx;
-  const clamped = Math.min(Math.max(raw, 0), panelsOrder.length - 1);
+    const menuW = sidebarMenu.offsetWidth - 8;
+    const stepPx = menuW / 3;
+    const raw = startIndex + dx / stepPx;
+    const clamped = Math.min(Math.max(raw, 0), panelsOrder.length - 1);
 
-  sidebarMenu.style.setProperty('--indicator-index', clamped);
+    sidebarMenu.style.setProperty('--indicator-index', clamped);
 
-  const snapped = Math.round(clamped);
-  if (snapped !== Math.round(liveIndex)) {
-    setActiveBtn(snapped);
-  }
-  liveIndex = clamped;
-});
+    const snapped = Math.round(clamped);
+    if (snapped !== Math.round(liveIndex)) {
+      setActiveBtn(snapped);
+    }
+    liveIndex = clamped;
+  });
 
   function endDrag() {
     if (!dragging) return;

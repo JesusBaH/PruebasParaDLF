@@ -41,6 +41,11 @@
   100% { box-shadow: 0 0 0px rgba(0, 204, 82, 0); border-color: transparent; }
 }
 
+body.loading {
+  visibility: hidden;
+  opacity: 0;
+}
+
 .dashboard-wrapper {
   display: flex;
   width: 100%;
